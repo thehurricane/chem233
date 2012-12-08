@@ -4,6 +4,7 @@ $pageTitle = "Add questions";
 include 'header.php';
 
 print_r($_POST);
+print_r($_FILES);
 $questionID = $_POST["questionID"];
 //Escape the description
 $questionDescription = addslashes($_POST["comments"]);
@@ -14,7 +15,7 @@ if(!$result) {
 	echo  "<p>Question created</p>\n";
 }
 //TODO: Set the limit of this for loop to something not hard coded
-for ($i = 1; $i <= 8; $i++) {
+for ($i = 1; $i <= 1; $i++) {
 	$questionMRVFilePath = "./questionMRVs/q" . $questionID . "." . $i . ".mrv";
 	$fileName = "questionMRV" . $i;
 	echo $_FILES[$fileName]['tmp_name'];
@@ -30,14 +31,29 @@ for ($i = 1; $i <= 8; $i++) {
 		}
 	}
 	
-	$correctMRVFilePath = "./correctMRVs/q" . $questionID . ".correct." . $i . ".mrv";
-	$fileName = "correctMRV" . $i;
+	$correctMRVFilePath = "./correctMRVs/q" . $questionID . ".correct." . $i . ".1.mrv";
+	$fileName = "correctMRV" . $i . "_1";
 	echo $_FILES[$fileName]['tmp_name'];
 	if ($_FILES[$fileName]['error'] > 0) {
 		echo "<p>Error: " . $_FILES[$fileName]['error'] . "</p>\n";
 	} else {
 		move_uploaded_file($_FILES[$fileName]['tmp_name'], $correctMRVFilePath);
 		$result = mysql_query("INSERT INTO correctMRVs (questionID, questionIndex, filepath) VALUES ('$questionID', '$i', '$correctMRVFilePath');");
+		if(!$result) {
+			echo "<p>Could not insert this file.</p>\n";
+		} else {
+			echo  "<p>File inserted</p>\n";
+		}
+	}
+	
+	$feedbackMRVFilePath = "./feedbackMRVs/q" . $questionID . ".feedback." . $i . ".1.mrv";
+	$fileName = "feedbackMRV" . $i . "_1";
+	echo $_FILES[$fileName]['tmp_name'];
+	if ($_FILES[$fileName]['error'] > 0) {
+		echo "<p>Error: " . $_FILES[$fileName]['error'] . "</p>\n";
+	} else {
+		move_uploaded_file($_FILES[$fileName]['tmp_name'], $feedbackMRVFilePath);
+		$result = mysql_query("INSERT INTO feedbackMRVs (questionID, questionIndex, filepath) VALUES ('$questionID', '$i', '$feedbackMRVFilePath');");
 		if(!$result) {
 			echo "<p>Could not insert this file.</p>\n";
 		} else {

@@ -5,9 +5,7 @@
 }
 
 html, body
-
 {
-
 	//background-color: #1E90FF;
 	background-color: #330066;
 	padding: 0em;
@@ -17,14 +15,20 @@ html, body
 
 }
 
-#content p
+#content
+{
+	color: #FFFFFF;
+}
 
+#content h4
 {
 	padding: 1em;
+}
 
+#content p
+{
+	padding: 1em;
 	font-size:12px;
-	color: #FFFFFF;
-
 }
 
 a
