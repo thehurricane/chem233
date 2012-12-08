@@ -79,9 +79,12 @@ if ($_SESSION['questionAnswered'] == true) {
 		$equalsResult = $submittedMoleculeArray[$i]->equals($correctMoleculeArray[$i]);
 		$index = $i + 1;
 		if (strcmp($equalsResult, "equal") == 0) {
+			//The answer is correct
 			$_SESSION['evaluationResult'][$i] = "Fine";
 			//echo "<p>$index: Correct!!!</p>\n";
 		} else {
+			//The answer is incorrect
+			//TODO: Check the submitted file against the feedbackMRVs for this question
 			$_SESSION['evaluationResult'][$i] = $equalsResult;
 			//Fill up the rest of the array with empty strings to the student only gets feedback on the first wrong answer and nothing after that.
 			for ($i = $i + 1; $i < $questionMRVsResultSize; $i++) {

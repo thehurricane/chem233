@@ -4,7 +4,6 @@ $pageTitle = "Add questions";
 include 'header.php';
 
 print_r($_POST);
-print_r($_FILES);
 $questionID = $_POST["questionID"];
 //Escape the description
 $questionDescription = addslashes($_POST["comments"]);
@@ -53,7 +52,8 @@ for ($i = 1; $i <= 1; $i++) {
 		echo "<p>Error: " . $_FILES[$fileName]['error'] . "</p>\n";
 	} else {
 		move_uploaded_file($_FILES[$fileName]['tmp_name'], $feedbackMRVFilePath);
-		$result = mysql_query("INSERT INTO feedbackMRVs (questionID, questionIndex, filepath) VALUES ('$questionID', '$i', '$feedbackMRVFilePath');");
+		$feedbackDescription = addslashes($_POST["feedbackDescription$i_1"]);
+		$result = mysql_query("INSERT INTO feedbackMRVs (questionID, questionIndex, filepath, description) VALUES ('$questionID', '$i', '$feedbackMRVFilePath', '$feedbackDescription');");
 		if(!$result) {
 			echo "<p>Could not insert this file.</p>\n";
 		} else {

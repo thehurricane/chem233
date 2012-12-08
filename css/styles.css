@@ -30,6 +30,11 @@ textarea
 	padding: 1em;
 }
 
+#content h5
+{
+	padding: 1em;
+}
+
 #content p
 {
 	padding: 1em;

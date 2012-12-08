@@ -22,7 +22,7 @@ $startTime = time();
 $questionsResult = mysql_query("SELECT * FROM questions WHERE questionID = $questionID");
 $questionArray = mysql_fetch_array($questionsResult);
 //Strip the slashes that were inserted into the description
-echo "<p>" . stripcslashes($questionArray['description']) . "</p>\n";
+echo "<h5>" . stripcslashes($questionArray['description']) . "</h5>\n";
 
 if ($_SESSION['answerEvaluated'] == true) {
 	echo "<p><b>Please view your feedback for each intermediate below.</b></p>\n";
