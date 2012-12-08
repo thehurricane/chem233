@@ -5,9 +5,7 @@
 <li><a href="otherResources.php">resources</a></li>
 <li><a href = "help.php">help</a></li>
 <li><a href = "logout.php">log out</a></li>
-<!--Take these items out later-->
-<li><a href = "addQuestions.php">add questions</a></li>
-<!--<li><a href = "questionProcessing.php">test questionProcessing</a></li>-->
-<!--<li><a href = "test.php">test page</a></li>-->
+<!--Take this items out later-->
+<li><a href = "addQuestionsStep1.php">add questions</a></li>
 </ul>
 </div>
