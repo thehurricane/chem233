@@ -13,7 +13,7 @@ if (is_numeric($numberOfQuestionMRVs)) {
 	$numberOfQuestionMRVs = floor($numberOfQuestionMRVs);
 	//Limit number of question MRVs to 40
 	if (($numberOfQuestionMRVs > 0) && ($numberOfQuestionMRVs < 40)) {
-		echo "<h4>Adding question with $numberOfQuestionMRVs question MRVs.</h4>\n";
+		echo "<h4>Adding question with $numberOfQuestionMRVs question MRV(s).</h4>\n";
 	} else {
 		$numberOfQuestionMRVs = null;
 	}
@@ -174,24 +174,38 @@ if (($numberOfQuestionMRVs != null) && ($maxNumberOfCorrectMRVs != null) && ($ma
 		<td>
 		Feedback file(s):
 		</td>
-		<td>
 		<?php
 		//Input from these form elements will be stored in $_POST variables. They will be named in this format: "feedbackMRV1.1"
 		for ($j = 1; $j <= $maxNumberOfFeedbackMRVs; $j++) {
 			if ($j == 1) {
 		?>
+			<td>
 			<input id='feedbackMRVLimit<?php echo $i . "." . "$j"; ?>' type='hidden' name='MAX_FILE_SIZE' value='10000' />
 			<input id='feedbackMRV<?php echo $i . "." . $j; ?>' type='file' name='feedbackMRV<?php echo $i . "." . $j; ?>' size='14'/>
+			</td>
+			<td>
+			Description of feedback:
+			</td>
+			<td>
+			<textarea name='feedbackDescription<?php echo $i . "." . "$j"; ?>' rows=7 cols=50 maxlength=500></textarea>
+			</td>
 		<?php
 			} else {
 		?>
+			<td>
 			<input id='feedbackMRVLimit<?php echo $i . "." . "$j"; ?>' type='hidden' name='MAX_FILE_SIZE' value='10000' />
 			<input id='feedbackMRV<?php echo $i . "." . $j; ?>' type='file' hidden='true' name='feedbackMRV<?php echo $i . "." . $j; ?>' size='14'/>
+			</td>
+			<td>
+			Description of feedback:
+			</td>
+			<td>
+			<textarea name='feedbackDescription<?php echo $i . "." . "$j"; ?>' hidden='true' rows=7 cols=50 maxlength=500></textarea>
+			</td>
 		<?php
 			}
 		}
 		?>
-		</td>
 		</tr>
 	<?php
 	}
