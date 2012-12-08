@@ -61,155 +61,70 @@ if (($numberOfQuestionMRVs != null) && ($maxNumberOfCorrectMRVs != null) && ($ma
 	</p>
 	
 	<table>
+	<tr>
 	<?php
 	for ($i = 1; $i <= $numberOfQuestionMRVs; $i++) {
 	?>
-		<tr>
-		<th>
-		<?php echo $i; ?>
-		</th>
-		<td>
-		Question file:
-		</td>
-		<td>
-		<!-- MAX_FILE_SIZE must precede the file input field -->
-		<input type='hidden' name='MAX_FILE_SIZE' value='10000' />
-		<input type='file' name='questionMRV<?php echo $i; ?>' size='14'/>
-		</td>
-		<td>
-		Number of correct answers for this intermediate:
-		</td>
-		<td>
-		<script>
-		function updateNumberOfCorrect<?php echo $i; ?>() {
-			var numberSelectedCorrect = document.getElementById("correctDropDown<?php echo $i; ?>").value;
-			//alert(numberSelectedCorrect);
+	<td>
+		<table>
+			<tr>
+				<th>Intermediate <?php echo $i; ?>:</th>
+			</tr>
+			<tr>
+				<td>Question file:</td>
+				<td>
+				<!-- MAX_FILE_SIZE must precede the file input field -->
+				<input type='hidden' name='MAX_FILE_SIZE' value='10000' />
+				<input type='file' name='questionMRV<?php echo $i; ?>' size='14'/>
+				</td>
+			</tr>
+			<tr>
+				<td>
+				Correct answer file(s):
+				</td>
+				<td>
+			</tr>
 			<?php
+			//Input from these form elements will be stored in $_POST variables. They will be named in this format: "correctMRV1.1"
 			for ($j = 1; $j <= $maxNumberOfCorrectMRVs; $j++) {
-			?>
-				if (<?php echo $j; ?> <= numberSelectedCorrect) {
-					document.getElementById("correctMRV<?php echo $i . '.' . $j; ?>").hidden = false;
-				} else {
-					document.getElementById("correctMRV<?php echo $i . '.' . $j; ?>").hidden = true;
-				}
-			<?php
+				echo "<tr>\n";
+				echo "<td>\n";
+				echo "$j: ";
+				echo "<input id='correctMRVLimit$i.$j' type='hidden' name='MAX_FILE_SIZE' value='10000' />";
+				echo "<input id='correctMRV$i.$j' type='file' name='correctMRV$i.$j' size='14'/>";
+				echo "</td>\n";
+				echo "</tr>\n"; 
 			}
 			?>
-		}
-		</script>
-		<select id="correctDropDown<?php echo $i; ?>" onchange="updateNumberOfCorrect<?php echo $i; ?>()">
-		<?php
-		for ($j = 1; $j <= $maxNumberOfCorrectMRVs; $j++) {
-			if ($j == 1) {
-		?>
-				<option value="<?php echo $j; ?>" selected="selected"><?php echo $j; ?></option>
-		<?php
-			} else {
-		?>
-				<option value="<?php echo $j; ?>"><?php echo $j; ?></option>
-		<?php
-			}
-		}
-		?>
-		</select>
-		</td>
-		<td>
-		Correct answer file(s):
-		</td>
-		<td>
-		<?php
-		//Input from these form elements will be stored in $_POST variables. They will be named in this format: "correctMRV1.1"
-		for ($j = 1; $j <= $maxNumberOfCorrectMRVs; $j++) {
-			if ($j == 1) {
-		?>
-			<input id='correctMRVLimit<?php echo $i . "." . "$j"; ?>' type='hidden' name='MAX_FILE_SIZE' value='10000' />
-			<input id='correctMRV<?php echo $i . "." . $j; ?>' type='file' name='correctMRV<?php echo $i . "." . $j; ?>' size='14'/>
-		<?php
-			} else {
-		?>
-			<input id='correctMRVLimit<?php echo $i . "." . "$j"; ?>' type='hidden' name='MAX_FILE_SIZE' value='10000' />
-			<input id='correctMRV<?php echo $i . "." . $j; ?>' type='file' hidden='true' name='correctMRV<?php echo $i . "." . $j; ?>' size='14'/>
-		<?php
-			}
-		}
-		?>
-		</td>
-		<td>
-		Number of feedback files for this intermediate:
-		</td>
-		<td>
-		<script>
-		function updateNumberOfFeedback<?php echo $i; ?>() {
-			var numberSelectedFeedback = document.getElementById("feedbackDropDown<?php echo $i; ?>").value;
-			//alert(numberSelectedFeedback);
+			<tr>
+				<td>
+				Feedback file(s):
+				</td>
+			</tr>
 			<?php
+			//Input from these form elements will be stored in $_POST variables. They will be named in this format: "feedbackMRV1.1"
 			for ($j = 1; $j <= $maxNumberOfFeedbackMRVs; $j++) {
-			?>
-				if (<?php echo $j; ?> <= numberSelectedFeedback) {
-					document.getElementById("feedbackMRV<?php echo $i . '.' . $j; ?>").hidden = false;
-				} else {
-					document.getElementById("feedbackMRV<?php echo $i . '.' . $j; ?>").hidden = true;
-				}
-			<?php
+				echo "<tr>\n";
+				echo "<td>\n";
+				echo "$j: ";
+				echo "<input id='feedbackMRVLimit$i.$j' type='hidden' name='MAX_FILE_SIZE' value='10000' />";
+				echo "<input id='feedbackMRV$i.$j' type='file' name='feedbackMRV$i.$j' size='14'/>";
+				echo "</td>\n";
+				echo "<td>\n";
+				echo "Description of feedback: ";
+				echo "</td>\n";
+				echo "<td>\n";
+				echo "<textarea id='feedbackDescription$i.$j' name='feedbackDescription$i.$j' rows=3 cols=20 maxlength=100></textarea>";
+				echo "</td>\n";
+				echo "</tr>\n"; 
 			}
 			?>
-		}
-		</script>
-		<select id="feedbackDropDown<?php echo $i; ?>" onchange="updateNumberOfFeedback<?php echo $i; ?>()">
-		<?php
-		for ($j = 1; $j <= $maxNumberOfFeedbackMRVs; $j++) {
-			if ($j == 1) {
-		?>
-				<option value="<?php echo $j; ?>" selected="selected"><?php echo $j; ?></option>
-		<?php
-			} else {
-		?>
-				<option value="<?php echo $j; ?>"><?php echo $j; ?></option>
-		<?php
-			}
-		}
-		?>
-		</select>
-		</td>
-		<td>
-		Feedback file(s):
-		</td>
-		<?php
-		//Input from these form elements will be stored in $_POST variables. They will be named in this format: "feedbackMRV1.1"
-		for ($j = 1; $j <= $maxNumberOfFeedbackMRVs; $j++) {
-			if ($j == 1) {
-		?>
-			<td>
-			<input id='feedbackMRVLimit<?php echo $i . "." . "$j"; ?>' type='hidden' name='MAX_FILE_SIZE' value='10000' />
-			<input id='feedbackMRV<?php echo $i . "." . $j; ?>' type='file' name='feedbackMRV<?php echo $i . "." . $j; ?>' size='14'/>
-			</td>
-			<td>
-			Description of feedback:
-			</td>
-			<td>
-			<textarea name='feedbackDescription<?php echo $i . "." . "$j"; ?>' rows=7 cols=50 maxlength=500></textarea>
-			</td>
-		<?php
-			} else {
-		?>
-			<td>
-			<input id='feedbackMRVLimit<?php echo $i . "." . "$j"; ?>' type='hidden' name='MAX_FILE_SIZE' value='10000' />
-			<input id='feedbackMRV<?php echo $i . "." . $j; ?>' type='file' hidden='true' name='feedbackMRV<?php echo $i . "." . $j; ?>' size='14'/>
-			</td>
-			<td>
-			Description of feedback:
-			</td>
-			<td>
-			<textarea name='feedbackDescription<?php echo $i . "." . "$j"; ?>' hidden='true' rows=7 cols=50 maxlength=500></textarea>
-			</td>
-		<?php
-			}
-		}
-		?>
-		</tr>
+		</table>
+	</td>
 	<?php
 	}
 	?>
+	</tr>
 	</table>
 	<p>
 	<input type='submit' value='Upload'/>

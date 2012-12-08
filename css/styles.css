@@ -15,6 +15,11 @@ html, body
 
 }
 
+textarea
+{
+	background-color: #FFFFFF;
+}
+
 #content
 {
 	color: #FFFFFF;
