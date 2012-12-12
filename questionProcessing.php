@@ -76,21 +76,40 @@ if ($_SESSION['questionAnswered'] == true) {
 	
 	//Test all the files submitted
 	for ($i = 0; $i < $questionMRVsResultSize; $i++) {
-		$equalsResult = $submittedMoleculeArray[$i]->equals($correctMoleculeArray[$i]);
 		$index = $i + 1;
-		if (strcmp($equalsResult, "equal") == 0) {
+		$correctResult = $submittedMoleculeArray[$i]->equals($correctMoleculeArray[$i]);
+		if (strcmp($correctResult, "equal") == 0) {
 			//The answer is correct
 			$_SESSION['evaluationResult'][$i] = "Fine";
 			//echo "<p>$index: Correct!!!</p>\n";
 		} else {
 			//The answer is incorrect
-			//TODO: Check the submitted file against the feedbackMRVs for this question
-			$_SESSION['evaluationResult'][$i] = $equalsResult;
+			//Check the submitted file against the feedbackMRVs for this question
+			$alternateFeedbackFound = false;
+			$feedbackMRVsResult = mysql_query("SELECT * FROM feedbackMRVs WHERE questionID = $questionID AND questionIndex = $i");
+			$feedbackMRVsResultSize = mysql_num_rows($feedbackMRVsResult);
+			$j = 0;
+			while (($j < $feedbackMRVsResultSize) && ($alternateFeedbackFound == false)) {
+				$nextRow = mysql_fetch_array($feedbackMRVsResult);
+				//Get the file that is saved on the server by looking at the filepath
+				$file = $nextRow[filepath];
+				//Create a new molecule using the Molecule class constructor (see moleculeClasses.php)
+				$feedbackMolecule = new Molecule($file);
+				$feedbackResult = $submittedMoleculeArray[$i]->equals($feedbackMolecule);
+				if (strcmp($feedbackResult, "equal") == 0) {
+					$_SESSION['evaluationResult'][$i] = $nextRow['description'];
+					$alternateFeedbackFound = true;
+				}
+				$j++;
+			}
+			if ($alternateFeedbackFound == false) {
+				$_SESSION['evaluationResult'][$i] = $correctResult;
+			}
 			//Fill up the rest of the array with empty strings to the student only gets feedback on the first wrong answer and nothing after that.
 			for ($i = $i + 1; $i < $questionMRVsResultSize; $i++) {
 				$_SESSION['evaluationResult'][$i] = "";
 			}
-			//echo "<p>$index: $equalsResult</p>\n";
+			//echo "<p>$index: $correctResult</p>\n";
 		}
 	}
 	$_SESSION['answerEvaluated'] = true;
