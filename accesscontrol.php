@@ -38,7 +38,7 @@ if (isset($_SESSION['uID'])) {
 		include 'footer.php';
 		exit;
 	}
-} else if(!isset($_SESSION['uID'])) {
+} else {
 	//User is not logged in
 	$pageTitle = "Log In";
 	include 'header.php';
