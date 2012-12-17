@@ -1,12 +1,13 @@
 <?php
 include 'accesscontrol.php';
 if ($_SESSION['questionAnswered'] == true) {
+	//Set this variable to be false because we are evaluating the question that was submitted.
+	$_SESSION['questionAnswered'] = false;
 	$questionID = $_SESSION['question'];
 	include 'moleculeClasses.php';
 	//print_r($_POST);
 	//print_r($_SESSION);
 	
-	$_SESSION['questionAnswered'] = false;
 	$uID = $_SESSION['uID'];
 	$questionID = $_SESSION['question'];
 	$result = mysql_query($sql);
@@ -74,7 +75,7 @@ if ($_SESSION['questionAnswered'] == true) {
 		$correctMoleculeArray[$i-1] = new Molecule($file);
 	}
 	
-	//Test all the files submitted
+	//Evaluate all the files submitted
 	for ($i = 0; $i < $questionMRVsResultSize; $i++) {
 		$index = $i + 1;
 		$correctResult = $submittedMoleculeArray[$i]->equals($correctMoleculeArray[$i]);
@@ -86,19 +87,24 @@ if ($_SESSION['questionAnswered'] == true) {
 			//The answer is incorrect
 			//Check the submitted file against the feedbackMRVs for this question
 			$alternateFeedbackFound = false;
-			$feedbackMRVsResult = mysql_query("SELECT * FROM feedbackMRVs WHERE questionID = $questionID AND questionIndex = $i");
+			$feedbackMRVsResult = mysql_query("SELECT * FROM feedbackMRVs WHERE questionID = $questionID AND questionIndex = $index");
 			$feedbackMRVsResultSize = mysql_num_rows($feedbackMRVsResult);
 			$j = 0;
 			while (($j < $feedbackMRVsResultSize) && ($alternateFeedbackFound == false)) {
 				$nextRow = mysql_fetch_array($feedbackMRVsResult);
+				//print_r($nextRow);
 				//Get the file that is saved on the server by looking at the filepath
-				$file = $nextRow[filepath];
+				$file = $nextRow['filepath'];
+				//echo "<p>$file</p>\n";
 				//Create a new molecule using the Molecule class constructor (see moleculeClasses.php)
 				$feedbackMolecule = new Molecule($file);
 				$feedbackResult = $submittedMoleculeArray[$i]->equals($feedbackMolecule);
 				if (strcmp($feedbackResult, "equal") == 0) {
 					$_SESSION['evaluationResult'][$i] = $nextRow['description'];
 					$alternateFeedbackFound = true;
+					//echo "<p>Oh yes!</p>\n";
+				} else {
+					//echo "<p>Oh no! $feedbackResult</p>\n";
 				}
 				$j++;
 			}
