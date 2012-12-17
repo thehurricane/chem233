@@ -24,12 +24,13 @@ if(!$result) {
 for ($i = 1; $i <= $_SESSION['numberOfQuestions']; $i++) {
 	$dropDownBoxName = "questionSelect" . $i;
 	$currentQuestionID = $_POST[$dropDownBoxName];
-	echo "<p>HELLO: " . $currentQuestionID . "</p>\n";
-	//$result = mysql_query("INSERT INTO assignmentQuestions (assignmentID, questionID, assignmentIndex, controlGroup) VALUES ('$assignmentID', '$dueDate');");
+	//echo "<p>HELLO: " . $currentQuestionID . "</p>\n";
+	$result = mysql_query("INSERT INTO assignmentQuestions (assignmentID, questionID, assignmentIndex, controlGroup) VALUES ('$assignmentID', '$currentQuestionID', '$i', 'a');");
+	if(!$result) {
+		echo "<p>question number " . $i . ": Could not add this question to the assignment.</p>\n";
+	} else {
+		echo "<p>question number " . $i . ": Added question to the assignment.</p>\n";
+	}
 }
-//Print out the total number of questionMRVs that were inserted.
-//$result = mysql_query("SELECT * FROM questionMRVs WHERE questionID = '$questionID';");
-//$resultSize = mysql_num_rows($result);
-//echo "<p>" . $resultSize . " question MRVs inserted for " . $questionID . ".</p>\n";
 include 'footer.php';
 ?>
