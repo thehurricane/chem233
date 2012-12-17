@@ -92,20 +92,14 @@ if ($_SESSION['questionAnswered'] == true) {
 			$j = 0;
 			while (($j < $feedbackMRVsResultSize) && ($alternateFeedbackFound == false)) {
 				$nextRow = mysql_fetch_array($feedbackMRVsResult);
-				//print_r($nextRow);
 				//Get the file that is saved on the server by looking at the filepath
 				$file = $nextRow['filepath'];
-				//echo "<p>$file</p>\n";
 				//Create a new molecule using the Molecule class constructor (see moleculeClasses.php)
 				$feedbackMolecule = new Molecule($file);
 				$feedbackResult = $submittedMoleculeArray[$i]->equals($feedbackMolecule);
 				if (strcmp($feedbackResult, "equal") == 0) {
 					$_SESSION['evaluationResult'][$i] = $nextRow['description'];
 					$alternateFeedbackFound = true;
-					//echo "<p>Oh yes!</p>\n";
-				} else {
-					//echo "<p>Oh no! $feedbackResult</p>\n";
-				}
 				$j++;
 			}
 			if ($alternateFeedbackFound == false) {
