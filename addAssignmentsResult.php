@@ -1,13 +1,13 @@
 <?php
 include 'accesscontrol.php';
-$pageTitle = "Add questions";
+$pageTitle = "Add assignments";
 include 'header.php';
 
 //Debug statements
-echo "<p>POST:</p>\n";
-print_r($_POST);
-echo "<p>SESSION:</p>\n";
-print_r($_SESSION);
+//echo "<p>POST:</p>\n";
+//print_r($_POST);
+//echo "<p>SESSION:</p>\n";
+//print_r($_SESSION);
 $assignmentID = $_POST["assignmentID"];
 //Escape the description
 //TODO: Don't hardcode the dates
