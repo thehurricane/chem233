@@ -7,5 +7,6 @@
 <li><a href = "logout.php">log out</a></li>
 <!--Take this items out later-->
 <li><a href = "addQuestionsStep1.php">add questions</a></li>
+<li><a href = "addAssignmentsStep1.php">add assignments</a></li>
 </ul>
 </div>

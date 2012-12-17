@@ -9,6 +9,9 @@ include 'header.php';
 $numberOfQuestionMRVs = $_POST['numberOfQuestionMRVs'];
 $maxNumberOfCorrectMRVs = $_POST['maxNumberOfCorrectMRVs'];
 $maxNumberOfFeedbackMRVs = $_POST['maxNumberOfFeedbackMRVs'];
+$_SESSION['numberOfQuestionMRVs'] = $numberOfQuestionMRVs;
+$_SESSION['maxNumberOfCorrectMRVs'] = $maxNumberOfCorrectMRVs;
+$_SESSION['maxNumberOfFeedbackMRVs'] = $maxNumberOfFeedbackMRVs;
 if (is_numeric($numberOfQuestionMRVs)) {
 	$numberOfQuestionMRVs = floor($numberOfQuestionMRVs);
 	//Limit number of question MRVs to 40
