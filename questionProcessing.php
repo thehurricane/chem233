@@ -98,7 +98,7 @@ if ($_SESSION['questionAnswered'] == true) {
 				$feedbackMolecule = new Molecule($file);
 				$feedbackResult = $submittedMoleculeArray[$i]->equals($feedbackMolecule);
 				if (strcmp($feedbackResult, "equal") == 0) {
-					$_SESSION['evaluationResult'][$i] = $nextRow['description'];
+					$_SESSION['evaluationResult'][$i] = $nextRow['feedback'];
 					$alternateFeedbackFound = true;
 				$j++;
 			}
