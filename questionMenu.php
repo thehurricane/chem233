@@ -24,14 +24,6 @@ if($assignmentID != NULL) {
 		echo "<table>\n";
 		echo "<tr>\n";
 		echo "<th>Number</th>";
-<<<<<<< HEAD
-		echo "</tr>\n";
-		//Print out the list of questions for this assignment
-		for ($i = 0; $i < $assignmentQuestionsResultSize; $i++) {
-			$currentRow = mysql_fetch_array($assignmentQuestionsResult);
-			echo "<tr>\n";
-			echo "<td><a href = 'questionDisplay.php?q=" . $currentRow['questionID'] . "'>" . $currentRow['assignmentIndex'] . "</a></td>\n";
-=======
 		echo "<th>Description</th>";
 		echo "<th>Attempts</th>";
 		echo "<th>Completed?</th>";
@@ -57,7 +49,6 @@ if($assignmentID != NULL) {
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $questionDescription . "</a></td>\n";
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $attemptValue . "</a></td>\n";
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>No</a></td>\n";
->>>>>>> questionsAdmin
 			//TODO: Add a data entry that contains the question's description (or at least a shortened version of it)
 			echo "</tr>\n";
 		}
