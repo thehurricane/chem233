@@ -100,6 +100,7 @@ if ($_SESSION['questionAnswered'] == true) {
 				if (strcmp($feedbackResult, "equal") == 0) {
 					$_SESSION['evaluationResult'][$i] = $nextRow['feedback'];
 					$alternateFeedbackFound = true;
+				}
 				$j++;
 			}
 			if ($alternateFeedbackFound == false) {
