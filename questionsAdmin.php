@@ -14,7 +14,11 @@ $questionsQueryResultSize = mysql_num_rows($questionsQueryResult);
 <th>ID</th>
 <th>Description</th>
 <th>Number of Intermediates</th>
+<<<<<<< HEAD
 <th>Using Assignments</th>
+=======
+<th>Used by Assignment(s)</th>
+>>>>>>> questionsAdmin
 </tr>
 <?php
 for ($i = 1; $i <= $questionsQueryResultSize; $i++) {
