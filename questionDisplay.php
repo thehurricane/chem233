@@ -28,6 +28,9 @@ echo "<p>" . stripcslashes($questionArray['description']) . "</p>\n";
 if ($_SESSION['answerEvaluated'] == true) {
 	echo "<p><b>Please view your feedback for each intermediate below.</b></p>\n";
 }
+if ($_POST['givenUp'] == true) {
+	echo "<p><b>YOU GAVE UP!</b></p>\n";
+}
 
 echo "<table>\n";
 //Get all the questionMRV files to provide data for the MarvinSketch windows
@@ -71,7 +74,39 @@ for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
 echo "</tr>\n";
 
 //Check if the question has been submitted for evaluation. If it hasn't then print out the questionMRVs as a starting point. If it has, then print out the most recently submittedMRVs.
-if ($_SESSION['answerEvaluated'] != true) {
+//HOWEVER, if $_POST['givenUp'] is true then just print out the correct MRVs in marvin sketch windows
+if ($_POST['givenUp'] == true) {
+	$correctMRVsResult = mysql_query("SELECT * FROM correctMRVs WHERE questionID = $questionID");
+	$correctMRVsResultSize = mysql_num_rows($correctMRVsResult);
+	echo "<tr>\n";
+	for ($i = 1; $i <= $correctMRVsResultSize; $i++) {
+		$currentRow = mysql_fetch_array($correctMRVsResult);
+		if ($i != 1 ) {
+			//Make an arrow between MarvinSketch windows
+			echo "<td><img src = './images/equalArrowWhite.png' alt = '-->'/></td>\n";
+		} else {
+			echo "<th>For reference:</th>\n";
+		}
+		echo "<td>";
+		//echo "<td>Display the question</td>\n";
+		echo"
+		<script type='text/javascript' SRC='marvin/marvin.js'></script>
+		<script type='text/javascript'>
+		mview_begin('marvin', 200, 200);
+		mview_param('detach', 'hide');
+		mview_param('dispQuality', '1');
+		mview_param('undetachByX', 'false');
+		mview_param('menubar', 'false');
+		mview_param('mol', '$currentRow[filepath]');
+		mview_param('autoscale', 'true');
+		mview_param('legacy_lifecycle', 'false');
+		mview_end();
+		</script>
+		";
+		echo "</td>";
+	}
+	echo "</tr>\n";
+} else if ($_SESSION['answerEvaluated'] != true) {
 	//A question hasn't been submitted. Display the starting point.
 	$questionMRVsResult = mysql_query("SELECT * FROM questionMRVs WHERE questionID = $questionID");
 	echo "<tr>\n";
@@ -192,27 +227,41 @@ echo "</table>\n";
 </tr>
 <tr>
 <td>
-<form name='moleculeForm' method ='Post' onSubmit='JavaScript:submitMolecules()' action='questionProcessing.php'>
-<textarea name='comments' rows=7 cols=50></textarea>
-</td>
-</tr>
-<tr>
-<td>
 <?php
-//Make a bunch hidden forms that get the value of the molecule file (via the submitMolecules method)
-for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
-	echo "<input type='hidden' name='mol$i' value=''/>";
+if ($_POST['givenUp'] == false) {
+?>
+	<form name='moleculeForm' method ='Post' onSubmit='JavaScript:submitMolecules()' action='questionProcessing.php'>
+	<textarea name='comments' rows=7 cols=50></textarea>
+	</td>
+	</tr>
+	<tr>
+	<td>
+	<?php
+	//Make a bunch hidden forms that get the value of the molecule file (via the submitMolecules method)
+	for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
+		echo "<input type='hidden' name='mol$i' value=''/>";
+	}
+	?>
+	<input type='hidden' name='timeToComplete' value=''/>
+	<input type='submit' name='Submit' value='Submit' onClick='JavaScript:submitMolecules();'/>
+	</form>
+<?php
 }
 ?>
-<input type='hidden' name='timeToComplete' value=''/>
-<input type='submit' name='Submit' value='Submit' onClick='JavaScript:submitMolecules();'/>
-</form>
 </td>
 </tr>
 <tr>
 <td>
 <form name='Reset' method = 'Post' action = "<?php echo $_SERVER['PHP_SELF']; ?>?q=<?php echo $_SESSION['question']; ?>">
 <input type="submit" name = "Reset" value="Reset"/>
+</form>
+</td>
+</tr>
+<tr>
+<td>
+<form name='GiveUp' method = 'Post' action = "<?php echo $_SERVER['PHP_SELF']; ?>?q=<?php echo $_SESSION['question']; ?>">
+<input type='hidden' name='givenUp' value='true'/>
+<input type="submit" name = "GiveUp" value="Give Up"/>
 </form>
 </td>
 </tr>
