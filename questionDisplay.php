@@ -27,9 +27,8 @@ echo "<p>" . stripcslashes($questionArray['description']) . "</p>\n";
 
 if ($_SESSION['answerEvaluated'] == true) {
 	echo "<p><b>Please view your feedback for each intermediate below.</b></p>\n";
-}
-if ($_POST['givenUp'] == true) {
-	echo "<p><b>YOU GAVE UP!</b></p>\n";
+} else if ($_POST['givenUp'] == true) {
+	echo "<p><b>Please view the correct mechanism below.</b></p>\n";
 }
 
 echo "<table>\n";
@@ -85,7 +84,7 @@ if ($_POST['givenUp'] == true) {
 			//Make an arrow between MarvinSketch windows
 			echo "<td><img src = './images/equalArrowWhite.png' alt = '-->'/></td>\n";
 		} else {
-			echo "<th>For reference:</th>\n";
+			echo "<th>Correct mechanism:</th>\n";
 		}
 		echo "<td>";
 		//echo "<td>Display the question</td>\n";
@@ -220,16 +219,14 @@ function submitMolecules() {
 </script>
 <?php
 echo "</table>\n";
-?>
-<table>
-<tr>
-<td>Enter a brief (less than 500 words) description of what happened in this reaction</td>
-</tr>
-<tr>
-<td>
-<?php
 if ($_POST['givenUp'] == false) {
 ?>
+	<table>
+	<tr>
+	<td>Enter a brief (less than 500 words) description of what happened in this reaction</td>
+	</tr>
+	<tr>
+	<td>
 	<form name='moleculeForm' method ='Post' onSubmit='JavaScript:submitMolecules()' action='questionProcessing.php'>
 	<textarea name='comments' rows=7 cols=50></textarea>
 	</td>
@@ -245,27 +242,25 @@ if ($_POST['givenUp'] == false) {
 	<input type='hidden' name='timeToComplete' value=''/>
 	<input type='submit' name='Submit' value='Submit' onClick='JavaScript:submitMolecules();'/>
 	</form>
+	</td>
+	</tr>
+	<tr>
+	<td>
+	<form name='Reset' method = 'Post' action = "<?php echo $_SERVER['PHP_SELF']; ?>?q=<?php echo $_SESSION['question']; ?>">
+	<input type="submit" name = "Reset" value="Reset"/>
+	</form>
+	</td>
+	</tr>
+	<tr>
+	<td>
+	<form name='GiveUp' method = 'Post' action = "<?php echo $_SERVER['PHP_SELF']; ?>?q=<?php echo $_SESSION['question']; ?>">
+	<input type='hidden' name='givenUp' value='true'/>
+	<input type="submit" name = "GiveUp" value="Give Up"/>
+	</form>
+	</td>
+	</tr>
+	</table>
 <?php
 }
-?>
-</td>
-</tr>
-<tr>
-<td>
-<form name='Reset' method = 'Post' action = "<?php echo $_SERVER['PHP_SELF']; ?>?q=<?php echo $_SESSION['question']; ?>">
-<input type="submit" name = "Reset" value="Reset"/>
-</form>
-</td>
-</tr>
-<tr>
-<td>
-<form name='GiveUp' method = 'Post' action = "<?php echo $_SERVER['PHP_SELF']; ?>?q=<?php echo $_SESSION['question']; ?>">
-<input type='hidden' name='givenUp' value='true'/>
-<input type="submit" name = "GiveUp" value="Give Up"/>
-</form>
-</td>
-</tr>
-</table>
-<?php
 include 'footer.php';
 ?>
