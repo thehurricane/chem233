@@ -22,7 +22,9 @@ $startTime = time();
 $questionsResult = mysql_query("SELECT * FROM questions WHERE questionID = $questionID");
 $questionArray = mysql_fetch_array($questionsResult);
 //Strip the slashes that were inserted into the description
-echo "<h5>" . stripcslashes($questionArray['description']) . "</h5>\n";
+
+echo "<h5>Question Description:</h5>\n";
+echo "<p>" . stripcslashes($questionArray['description']) . "</p>\n";
 
 if ($_SESSION['answerEvaluated'] == true) {
 	echo "<p><b>Please view your feedback for each intermediate below.</b></p>\n";
@@ -78,7 +80,7 @@ if ($_SESSION['answerEvaluated'] != true) {
 		$currentRow = mysql_fetch_array($questionMRVsResult);
 		if ($i != 1 ) {
 			//Make an arrow between MarvinSketch windows
-			echo "<td><img src = './images/equalArrowWhite.png' alt = '-->'/></td>\n";
+			echo "<td><img src = './images/equalArrowWhite.png' alt = '<-->'/></td>\n";
 		} else {
 			//Print this once
 			echo "<th>Your answers:</th>\n";
@@ -174,8 +176,11 @@ function submitMolecules() {
 		echo "var moleculeFile = document.MSketch$i.getMol('mrv:P');\n";
 		echo "document.moleculeForm.mol$i.value = moleculeFile;\n";
 	}
-	$totalTime = time() - $startTime;
-	echo "document.moleculeForm.timeToComplete.value = $totalTime;\n";
+	//$totalTime = time() - $startTime;
+	echo "var currentDate = new Date();";
+	echo "var currentTime = currentDate.getTime();";
+	echo "currentTime = Math.ceil(currentTime/1000);";
+	echo "document.moleculeForm.timeToComplete.value = currentTime - $startTime;\n";
 ?>
 }
 </script>

@@ -24,12 +24,31 @@ if($assignmentID != NULL) {
 		echo "<table>\n";
 		echo "<tr>\n";
 		echo "<th>Number</th>";
+		echo "<th>Description</th>";
+		echo "<th>Attempts</th>";
+		echo "<th>Completed?</th>";
 		echo "</tr>\n";
 		//Print out the list of questions for this assignment
 		for ($i = 0; $i < $assignmentQuestionsResultSize; $i++) {
-			$currentRow = mysql_fetch_array($assignmentQuestionsResult);
+			$uID = $_SESSION['uID'];
+			$currentAssignmentQuestion = mysql_fetch_array($assignmentQuestionsResult);
+			$questionID = $currentAssignmentQuestion['questionID'];
+			$questionsResult = mysql_query("SELECT * FROM questions WHERE questionID = '$questionID'");
+			$currentQuestion = mysql_fetch_array($questionsResult);
+			$questionDescription = $currentQuestion['description'];
+			$maxAttemptResult = mysql_query("SELECT MAX(attemptNumber) FROM submittedAnswers WHERE questionID = $questionID AND uID = $uID;");
+			if (mysql_num_rows($maxAttemptResult) == 0) {
+				$attemptValue = 0;
+			} else {
+				$maxAttemptArray = mysql_fetch_array($maxAttemptResult);
+				$maxAttemptValue = $maxAttemptArray['MAX(attemptNumber)'];
+				$attemptValue = $maxAttemptValue;
+			}
 			echo "<tr>\n";
-			echo "<td><a href = 'questionDisplay.php?q=" . $currentRow['questionID'] . "'>" . $currentRow['assignmentIndex'] . "</a></td>\n";
+			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $currentAssignmentQuestion['assignmentIndex'] . "</a></td>\n";
+			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $questionDescription . "</a></td>\n";
+			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $attemptValue . "</a></td>\n";
+			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>No</a></td>\n";
 			//TODO: Add a data entry that contains the question's description (or at least a shortened version of it)
 			echo "</tr>\n";
 		}
