@@ -25,10 +25,45 @@ if ($numberOfQuestions != null) {
 	$assignmentsQueryResult = mysql_query("SHOW TABLE STATUS WHERE name='assignments'");
 	$firstRow = mysql_fetch_array($assignmentsQueryResult);
 	$nextAssignmentID = $firstRow["Auto_increment"];
+	//Require the calendar class on this page.
+	require_once('./calendar/classes/tc_calendar.php');
+	//Get the current date.
+	$currentDay = date("j");
+	$currentMonth = date("n");
+	$currentYear = date("Y");
+	//echo "<p>Current date: $currentDay, $currentMonth, $currentYear</p>\n";
 	?>
 	<!--Add an assignment with questions to the system-->
-	<p>Use this page to add assignments into the system</p>
+	<script language="javascript" src="./calendar/calendar.js"></script>
 	<form action='addAssignmentsResult.php' enctype='multipart/form-data' method='post'>
+	<p>When will this assignment be open for students to use? (12:00am/00:00)</p>
+	<p>
+	<!-- Calendar functionality provided by: http://www.triconsole.com/php/calendar_datepicker.php -->
+	<?php
+	//Instantiate start calendar and set properties
+	$myCalendar = new tc_calendar("startDate");
+	$myCalendar->setIcon("./calendar/images/iconCalendar.gif", true, false);
+	$myCalendar->setDate($currentDay, $currentMonth, $currentYear);
+	$myCalendar->setPath("../calendar/");
+	$myCalendar->setDatePair('startDate', 'dueDate', "$currentYear-$currentMonth-$currentDay");
+	//Output the calendar to the page
+	$myCalendar->writeScript();
+	?>
+	</p>
+	<p>When will this assignment be due? (12:00am/00:00)</p>
+	<p>
+	<?php
+	//Instantiate start calendar and set properties
+	$myCalendar = new tc_calendar("dueDate");
+	$myCalendar->setIcon("./calendar/images/iconCalendar.gif", true, false);
+	$myCalendar->setDate($currentDay, $currentMonth, $currentYear);
+	$myCalendar->setPath("../calendar/");
+	$myCalendar->setDatePair('startDate', 'dueDate', "$currentYear-$currentMonth-$currentDay");
+	//Output the calendar to the page
+	$myCalendar->writeScript();
+	?>
+	</p>
+	<p>Select questions below.</p>
 	<p>
 	<input type="hidden" value="<?php echo $nextAssignmentID; ?>" name="assignmentID"/>
 	</p>

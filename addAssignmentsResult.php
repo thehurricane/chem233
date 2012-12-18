@@ -12,15 +12,29 @@ include 'header.php';
 $assignmentID = $_POST["assignmentID"];
 //Escape the description
 //TODO: Don't hardcode the dates
-$startDate = strtotime("1 December 2012");
-$startDate = date("Y-m-d H:i:s", $startDate);
-$dueDate = strtotime("1 December 2016");
-$dueDate = date("Y-m-d H:i:s", $dueDate);
+if (isset($_POST['startDate'])) {
+	$startDate = $_POST["startDate"];
+	$startDate = strtotime($startDate);
+	$startDate = date("Y-m-d H:i:s", $startDate);
+} else {
+	$startDate = strtotime("1 December 2012");
+	$startDate = date("Y-m-d H:i:s", $startDate);
+}
+if (isset($_POST['dueDate'])) {
+	$dueDate = $_POST["dueDate"];
+	$dueDate = strtotime($dueDate);
+	$dueDate = date("Y-m-d H:i:s", $dueDate);
+} else {
+	$dueDate = strtotime("1 December 2016");
+	$dueDate = date("Y-m-d H:i:s", $dueDate);
+}
 $result = mysql_query("INSERT INTO assignments (startDateTime, dueDateTime) VALUES ('$startDate', '$dueDate');");
 if(!$result) {
 	echo "<p>Error: could not make a new assignment.</p>\n";
 } else {
-	echo  "<p>Assignment created: " . $assignmentID . "</p>\n";
+	echo "<p>Assignment created: " . $assignmentID . "</p>\n";
+	echo "<p>Open at: " . $startDate . "</p>\n";
+	echo "<p>Due on: " . $dueDate . "</p>\n";
 }
 for ($i = 1; $i <= $_SESSION['numberOfQuestions']; $i++) {
 	$dropDownBoxName = "questionSelect" . $i;
