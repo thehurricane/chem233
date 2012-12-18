@@ -8,6 +8,7 @@ $assignmentsQueryResult = mysql_query("SELECT * FROM assignments");
 $assignmentsQueryResultSize = mysql_num_rows($assignmentsQueryResult);
 ?>
 <p>Use this page to create, delete, or modify assignments.</p>
+<p><b><a href = "addAssignmentsStep1.php">ADD A NEW ASSIGNMENT</a></b></p>
 <table>
 <tr>
 <th>ID</th>
@@ -31,6 +32,9 @@ for ($i = 1; $i <= $assignmentsQueryResultSize; $i++) {
 <?php
 }
 ?>
+<tr>
+<th><a href = "addAssignmentsStep1.php">NEW</a></th>
+</tr>
 </table>
 <?php
 include 'footer.php';

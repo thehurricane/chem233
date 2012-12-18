@@ -11,33 +11,35 @@ include 'header.php';
 //print_r($_FILES);
 $questionID = $_POST["questionID"];
 //Escape the description
-echo "<p>This is the question description: " . $_POST["comments"] . "</p>\n";
+echo "<p>Question description: " . $_POST["comments"] . "</p>\n";
 $questionDescription = addslashes($_POST["comments"]);
 $result = mysql_query("INSERT INTO questions (description) VALUES ('$questionDescription');");
 if(!$result) {
-	echo "<p>Error: could not make new question.</p>\n";
+	echo "<p>ERROR: Could not make new question.</p>\n";
 } else {
-	echo  "<p>Question created: " . $questionID. "</p>\n";
+	echo  "<p>SUCCESS: Question created: " . $questionID . "</p>\n";
 }
 for ($i = 1; $i <= $_SESSION['numberOfQuestionMRVs']; $i++) {
 	$questionMRVFilePath = "./questionMRVs/q" . $questionID . "." . $i . ".mrv";
 	$fileName = "questionMRV" . $i;
-	echo $_FILES[$fileName]['tmp_name'];
+	echo "<p>" . $fileName . ": _FILES[fileName][tmp_name]: " . $_FILES[$fileName]['tmp_name'] . "</p>\n";
 	if ($_FILES[$fileName]['error'] > 0) {
-		echo "<p>Error: " . $_FILES[$fileName]['error'] . "</p>\n";
-	} else {
+		echo "<p>ERROR: " . $_FILES[$fileName]['error'] . "</p>\n";
+	} else if (strcmp($_FILES[$fileName]['tmp_name'], "") != 0){
 		move_uploaded_file($_FILES[$fileName]['tmp_name'], $questionMRVFilePath);
-		$result = mysql_query("INSERT INTO questionMRVs (questionID, questionIndex, filepath) VALUES ('$questionID', '$i', '$questionMRVFilePath');");
+		$result = mysql_query("INSERT INTO questionMRVs (questionID, questionIndex, filepath) VALUES ('$questionID', '$i', '$questionMRVFilePath')");
 		if(!$result) {
-			echo "<p>questionMRV" . $i . ": Could not insert this file.</p>\n";
+			echo "<p>ERROR: " . $fileName . ": Could not insert this file.</p>\n";
 		} else {
-			echo  "<p>questionMRV" . $i . ": File inserted</p>\n";
+			echo "<p>SUCCESS: " . $fileName . ": File inserted</p>\n";
 		}
+	} else {
+		echo "<p>ERROR: Couldn't insert " . $fileName . ": " . $_FILES[$fileName]['error'] . "</p>\n";
 	}
-	
+
 	for ($j = 1; $j <= $_SESSION['maxNumberOfCorrectMRVs']; $j++) {
 		$fileName = "correctMRV" . $i . "_" . $j;
-		echo "<p>_FILES[fileName][tmp_name]: " . $_FILES[$fileName]['tmp_name'] . "</p>\n";
+		echo "<p>" . $fileName . ": _FILES[fileName][tmp_name]: " . $_FILES[$fileName]['tmp_name'] . "</p>\n";
 		if ($_FILES[$fileName]['error'] > 0) {
 			echo "<p>correctMRV" . $i . "." . $j . ": Error: " . $_FILES[$fileName]['error'] . "</p>\n";
 		} else if (strcmp($_FILES[$fileName]['tmp_name'], "") != 0) {
@@ -45,18 +47,18 @@ for ($i = 1; $i <= $_SESSION['numberOfQuestionMRVs']; $i++) {
 			move_uploaded_file($_FILES[$fileName]['tmp_name'], $correctMRVFilePath);
 			$result = mysql_query("INSERT INTO correctMRVs (questionID, questionIndex, filepath) VALUES ('$questionID', '$i', '$correctMRVFilePath');");
 			if(!$result) {
-				echo "<p>correctMRV" . $i . "." . $j . ": Could not insert this file.</p>\n";
+				echo "<p>ERROR: " . $fileName . ": Could not insert this file.</p>\n";
 			} else {
-				echo  "<p>correctMRV" . $i . "." . $j . ": File inserted</p>\n";
+				echo  "<p>SUCCESS: " . $fileName . ": File inserted</p>\n";
 			}
 		} else {
-			echo "<p>correctMRV" . $i . "." . $j . ": file isn't set.</p>\n";
+			echo "<p>ERROR: Couldn't insert " . $fileName . ": " . $_FILES[$fileName]['error'] . "</p>\n";
 		}
 	}
 	
 	for ($j = 1; $j <= $_SESSION['maxNumberOfFeedbackMRVs']; $j++) {
 		$fileName = "feedbackMRV" . $i . "_" . $j;
-		echo "<p>_FILES[fileName][tmp_name]: " . $_FILES[$fileName]['tmp_name'] . "</p>\n";
+		echo "<p>" . $fileName . ": _FILES[fileName][tmp_name]: " . $_FILES[$fileName]['tmp_name'] . "</p>\n";
 		if ($_FILES[$fileName]['error'] > 0) {
 			echo "<p>feedbackMRV" . $i . "." . $j . ": Error: " . $_FILES[$fileName]['error'] . "</p>\n";
 		} else if (strcmp($_FILES[$fileName]['tmp_name'], "") != 0){
@@ -65,14 +67,14 @@ for ($i = 1; $i <= $_SESSION['numberOfQuestionMRVs']; $i++) {
 			$feedbackDescriptionID = "feedbackDescription" . $i . "_" . $j;
 			echo "<p>This is the feedback description: " .  $_POST[$feedbackDescriptionID] . "</p>\n";
 			$feedbackDescription = addslashes($_POST[$feedbackDescriptionID]);
-			$result = mysql_query("INSERT INTO feedbackMRVs (questionID, questionIndex, filepath, description) VALUES ('$questionID', '$i', '$feedbackMRVFilePath', '$feedbackDescription');");
+			$result = mysql_query("INSERT INTO feedbackMRVs (questionID, questionIndex, filepath, feedback) VALUES ('$questionID', '$i', '$feedbackMRVFilePath', '$feedbackDescription');");
 			if(!$result) {
-				echo "<p>feedbackMRV" . $i . "." . $j . ": Could not insert this file.</p>\n";
+				echo "<p>ERROR: " . $fileName . ": Could not insert this file.</p>\n";
 			} else {
-				echo  "<p>feedbackMRV" . $i . "." . $j . ": File inserted</p>\n";
+				echo  "<p>SUCCESS: " . $fileName . ": File inserted</p>\n";
 			}
 		} else {
-			echo "<p>feedbackMRV" . $i . "." . $j . ": file isn't set.</p>\n";
+			echo "<p>ERROR: Couldn't insert " . $fileName . ": " . $_FILES[$fileName]['error'] . "</p>\n";
 		}
 	}
 }

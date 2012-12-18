@@ -6,8 +6,7 @@
 <li><a href = "help.php">help</a></li>
 <li><a href = "logout.php">log out</a></li>
 <!--Take this items out later-->
-<li><a href = "addQuestionsStep1.php">add questions</a></li>
-<li><a href = "addAssignmentsStep1.php">add assignments</a></li>
 <li><a href = "assignmentsAdmin.php">assignments admin</a></li>
+<li><a href = "questionsAdmin.php">questions admin</a></li>
 </ul>
 </div>
