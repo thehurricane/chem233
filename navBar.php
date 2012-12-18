@@ -8,5 +8,6 @@
 <!--Take this items out later-->
 <li><a href = "addQuestionsStep1.php">add questions</a></li>
 <li><a href = "addAssignmentsStep1.php">add assignments</a></li>
+<li><a href = "assignmentsAdmin.php">assignments admin</a></li>
 </ul>
 </div>

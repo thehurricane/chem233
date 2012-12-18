@@ -2,8 +2,8 @@
 include 'accesscontrol.php';
 $pageTitle = "Add assignments: Step 1";
 include 'header.php';
-
 //TODO: Make this page only accessible by administrators
+
 ?>
 <form method="post" action="addAssignmentsStep2.php">
 <p>Are you trying to add an assignment to the system? If so, you're in the right place. First, please answer this quick questions:</p>
