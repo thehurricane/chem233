@@ -2,8 +2,8 @@
 include 'accesscontrol.php';
 $pageTitle = "Add questions: Step 1";
 include 'header.php';
-
 //TODO: Make this page only accessible by administrators
+
 ?>
 <form method="post" action="addQuestionsStep2.php">
 <p>Are you trying to add some questions to the system? If so, you're in the right place. First, please answer these quick questions:</p>

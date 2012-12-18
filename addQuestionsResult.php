@@ -2,6 +2,7 @@
 include 'accesscontrol.php';
 $pageTitle = "Add questions";
 include 'header.php';
+//TODO: Make this page only accessible by administrators
 
 //Debug statements
 //echo "<p>POST:</p>\n";
