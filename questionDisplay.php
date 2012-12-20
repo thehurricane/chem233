@@ -12,8 +12,22 @@ $uID = $_SESSION['uID'];
 $_SESSION['question'] = $_GET['q'];
 $questionID = $_GET['q'];
 
-echo "<p>Try to figure out what's wrong with each intermediate. Some intermediates may be already correct.</p>\n";
-echo "<p>Press the 'Submit' button (bottom of the page) when you are ready to have your answer evaluated. If you can't figure out what to do, you can press the 'Give Up' button below to view the correct mechanism. Note that once you give up, you can no longer make submissions.</p>\n";
+//Check to see if the student has already completed the assignment or given up
+$completedOrGivenUp = false;
+$submittedAnswersResult = mysql_query("SELECT * FROM submittedAnswers WHERE uID = $uID AND questionID = $questionID");
+$submittedAnswersResultSize = mysql_num_rows($submittedAnswersResult);
+for ($i = 0; $i < $submittedAnswersResultSize; $i++) {
+	$currentRow = mysql_fetch_array($submittedAnswersResult);
+	if ((strcmp($currentRow['status'], "complete") == 0) || (strcmp($currentRow['status'], "given up") == 0)) {
+		$completedOrGivenUp = true;
+	}
+}
+if ($completedOrGivenUp) {
+	echo "<h4>COMPLETED OR GIVEN UP.</h4>\n";
+} else {
+	echo "<p>Try to figure out what's wrong with each intermediate. Some intermediates may be already correct.</p>\n";
+	echo "<p>Press the 'Submit' button (bottom of the page) when you are ready to have your answer evaluated. If you can't figure out what to do, you can press the 'Give Up' button below to view the correct mechanism. Note that once you give up, you can no longer make submissions.</p>\n";
+}
 
 //TODO: Set the start time and pass this time to the questionProcessing page
 $startTime = time();
@@ -27,7 +41,7 @@ echo "<p>" . stripcslashes($questionArray['description']) . "</p>\n";
 
 if ($_SESSION['answerEvaluated'] == true) {
 	echo "<p><b>Please view your feedback for each intermediate below.</b></p>\n";
-} else if ($_POST['givenUp'] == true) {
+} else if ($completedOrGivenUp) {
 	echo "<p><b>Please view the correct mechanism below.</b></p>\n";
 }
 
@@ -73,8 +87,8 @@ for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
 echo "</tr>\n";
 
 //Check if the question has been submitted for evaluation. If it hasn't then print out the questionMRVs as a starting point. If it has, then print out the most recently submittedMRVs.
-//HOWEVER, if $_POST['givenUp'] is true then just print out the correct MRVs in marvin sketch windows
-if ($_POST['givenUp'] == true) {
+//HOWEVER, if $completedOrGivenUp is true then just print out the correct MRVs in marvin sketch windows
+if ($completedOrGivenUp) {
 	$correctMRVsResult = mysql_query("SELECT * FROM correctMRVs WHERE questionID = $questionID");
 	$correctMRVsResultSize = mysql_num_rows($correctMRVsResult);
 	echo "<tr>\n";
@@ -204,7 +218,6 @@ if ($_POST['givenUp'] == true) {
 <script type='text/javascript'>
 function submitMolecules() {
 <?php
-	$_SESSION['questionAnswered'] = true;
 	for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
 		echo "var moleculeFile = document.MSketch$i.getMol('mrv:P');\n";
 		echo "document.moleculeForm.mol$i.value = moleculeFile;\n";
@@ -219,7 +232,7 @@ function submitMolecules() {
 </script>
 <?php
 echo "</table>\n";
-if ($_POST['givenUp'] == false) {
+if (!$completedOrGivenUp) {
 ?>
 	<table>
 	<tr>
@@ -240,7 +253,7 @@ if ($_POST['givenUp'] == false) {
 	}
 	?>
 	<input type='hidden' name='timeToComplete' value=''/>
-	<input type='submit' name='Submit' value='Submit' onClick='JavaScript:submitMolecules();'/>
+	<input type='submit' name='submit' value='Submit' onClick='JavaScript:submitMolecules();'/>
 	</form>
 	</td>
 	</tr>
@@ -253,9 +266,9 @@ if ($_POST['givenUp'] == false) {
 	</tr>
 	<tr>
 	<td>
-	<form name='GiveUp' method = 'Post' action = "<?php echo $_SERVER['PHP_SELF']; ?>?q=<?php echo $_SESSION['question']; ?>">
-	<input type='hidden' name='givenUp' value='true'/>
-	<input type="submit" name = "GiveUp" value="Give Up"/>
+	<!-- <form name='GiveUp' method = 'Post' action = "<?php echo $_SERVER['PHP_SELF']; ?>?q=<?php echo $_SESSION['question']; ?>"> -->
+	<form name = 'GiveUp' method = 'Post' action = 'questionProcessing.php'>
+	<input type="submit" name = "giveUp" value="Give Up"/>
 	</form>
 	</td>
 	</tr>

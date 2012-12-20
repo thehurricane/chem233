@@ -1,8 +1,7 @@
 <?php
 include 'accesscontrol.php';
-if ($_SESSION['questionAnswered'] == true) {
+if (isset($_POST['submit'])) {
 	//Set this variable to be false because we are evaluating the question that was submitted.
-	$_SESSION['questionAnswered'] = false;
 	$questionID = $_SESSION['question'];
 	include 'moleculeClasses.php';
 	//print_r($_POST);
@@ -10,7 +9,6 @@ if ($_SESSION['questionAnswered'] == true) {
 	
 	$uID = $_SESSION['uID'];
 	$questionID = $_SESSION['question'];
-	$result = mysql_query($sql);
 	$questionMRVsResult = mysql_query("SELECT * FROM questionMRVs WHERE questionID = $questionID");
 	$questionMRVsResultSize = mysql_num_rows($questionMRVsResult);
 	$maxAttemptResult = mysql_query("SELECT MAX(attemptNumber) FROM submittedMRVs WHERE questionID = $questionID AND uID = $uID;");
@@ -117,8 +115,20 @@ if ($_SESSION['questionAnswered'] == true) {
 	$_SESSION['answerEvaluated'] = true;
 	$questionDisplayURL = "questionDisplay.php?q=" . $_SESSION['question'];
 	header("location: $questionDisplayURL");
-} else if ($_SESSION['questionAnswered'] == true) {
-
+} else if ($_POST['giveUp'] == true) {
+	$uID = $_SESSION['uID'];
+	$questionID = $_SESSION['question'];
+	$maxAttemptResult = mysql_query("SELECT MAX(attemptNumber) FROM submittedMRVs WHERE questionID = $questionID AND uID = $uID;");
+	if (mysql_num_rows($maxAttemptResult) == 0) {
+		$currentAttemptValue = 1;
+	} else {
+		$maxAttemptArray = mysql_fetch_array($maxAttemptResult);
+		$maxAttemptValue = $maxAttemptArray['MAX(attemptNumber)'];
+		$currentAttemptValue = $maxAttemptValue + 1;
+	}
+	mysql_query("INSERT INTO submittedAnswers (questionID, uID, attemptNumber, description, timeToComplete, status) VALUES ('$questionID', '$uID', '$currentAttemptValue', '', '0', 'given up')");
+	$questionDisplayURL = "questionDisplay.php?q=" . $_SESSION['question'];
+	header("location: $questionDisplayURL");
 } else {
 	include 'accesscontrol.php';
 	$questionID = $_SESSION['question'];
