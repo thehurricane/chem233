@@ -21,16 +21,8 @@ if ($_SESSION['questionAnswered'] == true) {
 		$maxAttemptValue = $maxAttemptArray['MAX(attemptNumber)'];
 		$currentAttemptValue = $maxAttemptValue + 1;
 	}
-	//Save the text response to the database
-	$answerDescription = addslashes($_POST["comments"]);
-	$timeToComplete = $_POST['timeToComplete'];
-	$result = mysql_query("INSERT INTO submittedAnswers (questionID, uID, attemptNumber, description, timeToComplete) VALUES ('$questionID', '$uID', '$currentAttemptValue', '$answerDescription', '$timeToComplete')");
-	if (!$result) {
-		//echo "<p>Couldn't insert answer.</p>\n";
-	} else {
-		//echo  "<p>Answer inserted.</p>\n";
-	}
 	//Save all the molecules to the database
+	//Create a separate submittedMRV record for every molecule file submitted
 	for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
 		if (isset($_POST["mol" . $i])) {
 			//Save the file to disk first
@@ -113,9 +105,20 @@ if ($_SESSION['questionAnswered'] == true) {
 			//echo "<p>$index: $correctResult</p>\n";
 		}
 	}
+	//Check to see if the last intermediate evaluated to "Fine". If it did, then that means all the previous intermediates were also fine, thus the submission is correct.
+	$answerDescription = addslashes($_POST["comments"]);
+	$timeToComplete = $_POST['timeToComplete'];
+	//Insert the submittedAnswer into the database with status "complete" if the submission is correct or "incomplete" if the submission is not correct
+	if (strcmp($_SESSION['evaluationResult'][$questionMRVsResultSize - 1], "Fine") == 0) {
+		mysql_query("INSERT INTO submittedAnswers (questionID, uID, attemptNumber, description, timeToComplete, status) VALUES ('$questionID', '$uID', '$currentAttemptValue', '$answerDescription', '$timeToComplete', 'complete')");
+	} else {
+		mysql_query("INSERT INTO submittedAnswers (questionID, uID, attemptNumber, description, timeToComplete, status) VALUES ('$questionID', '$uID', '$currentAttemptValue', '$answerDescription', '$timeToComplete', 'incomplete')");
+	}
 	$_SESSION['answerEvaluated'] = true;
 	$questionDisplayURL = "questionDisplay.php?q=" . $_SESSION['question'];
 	header("location: $questionDisplayURL");
+} else if ($_SESSION['questionAnswered'] == true) {
+
 } else {
 	include 'accesscontrol.php';
 	$questionID = $_SESSION['question'];
