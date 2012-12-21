@@ -134,7 +134,7 @@ if (isset($_POST['submit'])) {
 	$questionID = $_SESSION['question'];
 	$pageTitle = "Processing Question " . $questionID;
 	include 'header.php';
-	print_r($_SESSION);
+	//print_r($_SESSION);
 	echo "<p>It doesn't look like you've answered a question. You probably came here by accident.</p>\n";
 	include 'footer.php';
 }

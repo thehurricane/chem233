@@ -22,11 +22,11 @@ for ($i = 0; $i < $assignmentResultSize; $i++) {
 	} else {
 		echo "<td><a href = 'questionMenu.php?assignment=" . $currentRow['assignmentID']."'>Assignment: " . $currentRow['assignmentID'] . "</a></td>\n";
 	}
-	echo "<td>" . $currentRow['startDateTime'] . "</td>\n";
+	echo "<td><a href = 'questionMenu.php?assignment=" . $currentRow['assignmentID']."'>" . $currentRow['startDateTime'] . "</a></td>\n";
 	if ((strtotime($currentRow['dueDateTime']) <= $currentTime)) {
-		echo "<td>" . $currentRow['dueDateTime'] . " (LATE)</td>\n";
+		echo "<td><a href = 'questionMenu.php?assignment=" . $currentRow['assignmentID']."'>" . $currentRow['dueDateTime'] . " (LATE)</a></td>\n";
 	} else {
-		echo "<td>" . $currentRow['dueDateTime'] . "</td>\n";
+		echo "<td><a href = 'questionMenu.php?assignment=" . $currentRow['assignmentID']."'>" . $currentRow['dueDateTime'] . "</a></td>\n";
 	}
 	echo "</tr>\n";
 }

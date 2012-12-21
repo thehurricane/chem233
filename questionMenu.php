@@ -48,7 +48,23 @@ if($assignmentID != NULL) {
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $currentAssignmentQuestion['assignmentIndex'] . "</a></td>\n";
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $questionDescription . "</a></td>\n";
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $attemptValue . "</a></td>\n";
-			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>No</a></td>\n";
+			$submittedAnswersResult = mysql_query("SELECT * FROM submittedAnswers WHERE questionID = $questionID AND uID = $uID;");
+			$submittedAnswersResultSize = mysql_num_rows($submittedAnswersResult);
+			$statusFound = false;
+			$status = "No";
+			$j = 0;
+			while (($j < $submittedAnswersResultSize) && (!$statusFound)) {
+				$currentRow = mysql_fetch_array($submittedAnswersResult);
+				if (strcmp($currentRow['status'], "complete") == 0) {
+					$statusFound = true;
+					$status = "Yes";
+				} else if (strcmp($currentRow['status'], "given up") == 0) {
+					$statusFound = true;
+					$status = "Given Up";
+				}
+				$j++;
+			}
+			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $status . "</a></td>\n";
 			//TODO: Add a data entry that contains the question's description (or at least a shortened version of it)
 			echo "</tr>\n";
 		}
