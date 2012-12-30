@@ -6,7 +6,13 @@
 <li><a href = "help.php">help</a></li>
 <li><a href = "logout.php">log out</a></li>
 <!--Take this items out later-->
+<?php
+if (isset($_SESSION['aID'])) {
+?>
 <li><a href = "assignmentsAdmin.php">assignments admin</a></li>
 <li><a href = "questionsAdmin.php">questions admin</a></li>
+<?php
+}
+?>
 </ul>
 </div>

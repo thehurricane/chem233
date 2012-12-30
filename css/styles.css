@@ -147,6 +147,11 @@ background-color: #550088;
 	height: 5em; /* .push must be the same height as .footer */
 }
 
+#footer a
+{
+	color: #000000;
+}
+
 .push
 {
 	height: 5em; /* .push must be the same height as .footer */

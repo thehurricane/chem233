@@ -1,8 +1,11 @@
 <?php
 include 'db.php';
+require("connectBB.php");
 if (session_start()) {
 	//echo "Session Active.";
 }
+//Use this line once the program is on the UBC server
+//if (isset($_SESSION['uID']) || isUserValid()) {
 if (isset($_SESSION['uID'])) {
 	//User is already logged in. Do nothing.
 } else if (isset($_POST['uID'])) {
@@ -10,6 +13,7 @@ if (isset($_SESSION['uID'])) {
 	if (is_numeric ($_POST['uID'])) {
 		//User has submitted a valid (numeric) id to be checked
 		$uID = $_POST['uID'];
+		$uID = mysql_real_escape_string($uID);
 		$usersResult = mysql_query("SELECT * FROM users WHERE uID = $uID");
 		if (!$usersResult) {
 			//Database problem

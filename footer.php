@@ -5,6 +5,7 @@ courtesy of Ryan Fait (http://ryanfait.com/sticky-footer/)-->
 </div>
 <div id = "footer">
 <p>Copyright UBC 2012</p>
+<p><a href = 'adminLogin.php'>Login as an administrator</a></p>
 </div>
 </body>
 </html>

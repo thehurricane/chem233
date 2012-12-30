@@ -126,6 +126,7 @@ if (isset($_POST['submit'])) {
 		$maxAttemptValue = $maxAttemptArray['MAX(attemptNumber)'];
 		$currentAttemptValue = $maxAttemptValue + 1;
 	}
+	//Insert the submittedAnswer into the database with status "given up"
 	mysql_query("INSERT INTO submittedAnswers (questionID, uID, attemptNumber, description, timeToComplete, status) VALUES ('$questionID', '$uID', '$currentAttemptValue', '', '0', 'given up')");
 	$questionDisplayURL = "questionDisplay.php?q=" . $_SESSION['question'];
 	header("location: $questionDisplayURL");
