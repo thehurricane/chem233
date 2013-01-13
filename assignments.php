@@ -12,10 +12,10 @@ include 'header.php';
 <?php
 $currentTime = time();
 //TODO: Change this to accomodate for the control group type once the database is restructured
-$assignmentResult = mysql_query("SELECT * FROM assignments");
-$assignmentResultSize = mysql_num_rows($assignmentResult);
+$assignmentResult = $mysqli->query("SELECT * FROM assignments");
+$assignmentResultSize = $assignmentResult->num_rows;
 for ($i = 0; $i < $assignmentResultSize; $i++) {
-	$currentRow = mysql_fetch_array($assignmentResult);
+	$currentRow = $assignmentResult->fetch_assoc();
 	echo "<tr>\n";
 	if ((strtotime($currentRow['startDateTime']) > $currentTime)) {
 		echo "<td>Assignment: " . $currentRow['assignmentID'] . "</td>\n";

@@ -14,8 +14,8 @@ if($assignmentID != NULL) {
 	//Set this session variable for use in questionDisplay.php (it will be used in the title of the page)
 	$_SESSION['assignmentID'] = $assignmentID;
 	//TODO: Change this once the database has been restructured
-	$assignmentQuestionsResult = mysql_query("SELECT * FROM assignmentQuestions WHERE assignmentID = '$assignmentID'");
-	$assignmentQuestionsResultSize = mysql_num_rows($assignmentQuestionsResult);
+	$assignmentQuestionsResult = $mysqli->query("SELECT * FROM assignmentQuestions WHERE assignmentID = '$assignmentID'");
+	$assignmentQuestionsResultSize = $assignmentQuestionsResult->num_rows;
 	if ($assignmentQuestionsResultSize == 0) {
 		//There is no assignment with that ID (user must have entered in a non-existant assignment number)
 		echo "<p>This assignment does not contain any questions.</p>\n";
@@ -31,16 +31,16 @@ if($assignmentID != NULL) {
 		//Print out the list of questions for this assignment
 		for ($i = 0; $i < $assignmentQuestionsResultSize; $i++) {
 			$uID = $_SESSION['uID'];
-			$currentAssignmentQuestion = mysql_fetch_array($assignmentQuestionsResult);
+			$currentAssignmentQuestion = $assignmentQuestionsResult->fetch_assoc();
 			$questionID = $currentAssignmentQuestion['questionID'];
-			$questionsResult = mysql_query("SELECT * FROM questions WHERE questionID = '$questionID'");
-			$currentQuestion = mysql_fetch_array($questionsResult);
+			$questionsResult = $mysqli->query("SELECT * FROM questions WHERE questionID = '$questionID'");
+			$currentQuestion = $questionsResult->fetch_assoc();
 			$questionDescription = $currentQuestion['description'];
-			$maxAttemptResult = mysql_query("SELECT MAX(attemptNumber) FROM submittedAnswers WHERE questionID = $questionID AND uID = $uID;");
-			if (mysql_num_rows($maxAttemptResult) == 0) {
+			$maxAttemptResult = $mysqli->query("SELECT MAX(attemptNumber) FROM submittedAnswers WHERE questionID = $questionID AND uID = $uID;");
+			if ($maxAttemptResult->num_rows == 0) {
 				$attemptValue = 0;
 			} else {
-				$maxAttemptArray = mysql_fetch_array($maxAttemptResult);
+				$maxAttemptArray = $maxAttemptResult->fetch_assoc();
 				$maxAttemptValue = $maxAttemptArray['MAX(attemptNumber)'];
 				$attemptValue = $maxAttemptValue;
 			}
@@ -48,13 +48,13 @@ if($assignmentID != NULL) {
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $currentAssignmentQuestion['assignmentIndex'] . "</a></td>\n";
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $questionDescription . "</a></td>\n";
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $attemptValue . "</a></td>\n";
-			$submittedAnswersResult = mysql_query("SELECT * FROM submittedAnswers WHERE questionID = $questionID AND uID = $uID;");
-			$submittedAnswersResultSize = mysql_num_rows($submittedAnswersResult);
+			$submittedAnswersResult = $mysqli->query("SELECT * FROM submittedAnswers WHERE questionID = $questionID AND uID = $uID;");
+			$submittedAnswersResultSize = $submittedAnswersResult->num_rows;
 			$statusFound = false;
 			$status = "No";
 			$j = 0;
 			while (($j < $submittedAnswersResultSize) && (!$statusFound)) {
-				$currentRow = mysql_fetch_array($submittedAnswersResult);
+				$currentRow = $submittedAnswersResult->fetch_assoc();
 				if (strcmp($currentRow['status'], "complete") == 0) {
 					$statusFound = true;
 					$status = "Yes";

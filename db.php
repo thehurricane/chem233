@@ -1,15 +1,17 @@
 <?php
 //Database host name
-$dbHostname = "localhost:8889";
+$dbHostname = "localhost";
 //Database user name
 $dbUsername = "root";
 //Database password
 $dbPassword = "root";
+//Database name
+$dbName = "chem233applet";
 //Connect to the database
-$dbConnection = mysql_connect($dbHostname, $dbUsername, $dbPassword);
-if (!$dbConnection) {
-	die('Could not connect: ' . mysql_error());
+//$dbConnection = mysqli_connect($dbHostname, $dbUsername, $dbPassword, $dbName);
+$mysqli = new mysqli($dbHostname, $dbUsername, $dbPassword, $dbName);
+if ($mysqli->connect_errno) {
+    echo "Connect failed: " . $mysqli->connect_error;
+    exit();
 }
-//If the name of the database changes, change it here
-mysql_select_db("chem233applet", $dbConnection);
 ?>

@@ -9,18 +9,19 @@ if (isset($_POST['submit'])) {
 	
 	$uID = $_SESSION['uID'];
 	$questionID = $_SESSION['question'];
-	$questionMRVsResult = mysql_query("SELECT * FROM questionMRVs WHERE questionID = $questionID");
-	$questionMRVsResultSize = mysql_num_rows($questionMRVsResult);
-	$maxAttemptResult = mysql_query("SELECT MAX(attemptNumber) FROM submittedMRVs WHERE questionID = $questionID AND uID = $uID;");
-	if (mysql_num_rows($maxAttemptResult) == 0) {
+	$questionMRVsResult = $mysqli->query("SELECT * FROM questionMRVs WHERE questionID = $questionID");
+	$questionMRVsResultSize = $questionMRVsResult->num_rows;
+	$maxAttemptResult = $mysqli->query("SELECT MAX(attemptNumber) FROM submittedMRVs WHERE questionID = $questionID AND uID = $uID;");
+	if ($maxAttemptResult->num_rows == 0) {
 		$currentAttemptValue = 1;
 	} else {
-		$maxAttemptArray = mysql_fetch_array($maxAttemptResult);
+		$maxAttemptArray = $maxAttemptResult->fetch_assoc();
 		$maxAttemptValue = $maxAttemptArray['MAX(attemptNumber)'];
 		$currentAttemptValue = $maxAttemptValue + 1;
 	}
-	//Save all the molecules to the database
-	//Create a separate submittedMRV record for every molecule file submitted
+	//Save all the molecules to the database.
+	//-Create a separate submittedMRV record for every molecule file submitted.
+	//-Save each file on the server in a directory called "submittedMRVs".
 	for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
 		if (isset($_POST["mol" . $i])) {
 			//Save the file to disk first
@@ -29,7 +30,7 @@ if (isset($_POST['submit'])) {
 			fwrite($myFilePointer, $_POST["mol" . $i]);
 			fclose($myFilePointer);
 			//Insert this file into the database
-			$result = mysql_query("INSERT INTO submittedMRVs (questionID, questionIndex, uID, filepath, attemptNumber) VALUES ('$questionID', '$i', '$uID', '$myFile', '$currentAttemptValue')");
+			$result = $mysqli->query("INSERT INTO submittedMRVs (questionID, questionIndex, uID, filepath, attemptNumber) VALUES ('$questionID', '$i', '$uID', '$myFile', '$currentAttemptValue')");
 			if(!$result) {
 				//echo "<p>Could not insert this file.</p>\n";
 			} else {
@@ -45,8 +46,8 @@ if (isset($_POST['submit'])) {
 	//Populate the submitted array
 	for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
 		//Get the next answered intermediate
-		$submittedMRVFile = mysql_query( "SELECT * FROM submittedMRVs WHERE questionID = $questionID AND questionIndex = $i AND uID = $uID AND attemptNumber = $currentAttemptValue" );
-		$nextRow = mysql_fetch_array($submittedMRVFile);
+		$submittedMRVFile = $mysqli->query( "SELECT * FROM submittedMRVs WHERE questionID = $questionID AND questionIndex = $i AND uID = $uID AND attemptNumber = $currentAttemptValue" );
+		$nextRow = $submittedMRVFile->fetch_assoc();
 		//Get the file that is saved on the server by looking at the filepath
 		$file = $nextRow['filepath'];
 		//Create a new molecule using the Molecule class constructor (see moleculeClasses.php)
@@ -57,8 +58,8 @@ if (isset($_POST['submit'])) {
 	for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
 		//Get the next correct answer
 		//TODO: Add functionality for the case where there are multiple correct answers
-		$correctMRVsResult = mysql_query("SELECT * FROM correctMRVs WHERE questionID = $questionID AND questionIndex = $i");
-		$nextRow = mysql_fetch_array($correctMRVsResult);
+		$correctMRVsResult = $mysqli->query("SELECT * FROM correctMRVs WHERE questionID = $questionID AND questionIndex = $i");
+		$nextRow = $correctMRVsResult->fetch_assoc();
 		//Get the file that is saved on the server by looking at the filepath
 		$file = $nextRow[filepath];
 		//Create a new molecule using the Molecule class constructor (see moleculeClasses.php)
@@ -77,11 +78,11 @@ if (isset($_POST['submit'])) {
 			//The answer is incorrect
 			//Check the submitted file against the feedbackMRVs for this question
 			$alternateFeedbackFound = false;
-			$feedbackMRVsResult = mysql_query("SELECT * FROM feedbackMRVs WHERE questionID = $questionID AND questionIndex = $index");
-			$feedbackMRVsResultSize = mysql_num_rows($feedbackMRVsResult);
+			$feedbackMRVsResult = $mysqli->query("SELECT * FROM feedbackMRVs WHERE questionID = $questionID AND questionIndex = $index");
+			$feedbackMRVsResultSize = $feedbackMRVsResult->num_rows;
 			$j = 0;
 			while (($j < $feedbackMRVsResultSize) && ($alternateFeedbackFound == false)) {
-				$nextRow = mysql_fetch_array($feedbackMRVsResult);
+				$nextRow = $feedbackMRVsResult->fetch_assoc;
 				//Get the file that is saved on the server by looking at the filepath
 				$file = $nextRow['filepath'];
 				//Create a new molecule using the Molecule class constructor (see moleculeClasses.php)
@@ -108,9 +109,9 @@ if (isset($_POST['submit'])) {
 	$timeToComplete = $_POST['timeToComplete'];
 	//Insert the submittedAnswer into the database with status "complete" if the submission is correct or "incomplete" if the submission is not correct
 	if (strcmp($_SESSION['evaluationResult'][$questionMRVsResultSize - 1], "Fine") == 0) {
-		mysql_query("INSERT INTO submittedAnswers (questionID, uID, attemptNumber, description, timeToComplete, status) VALUES ('$questionID', '$uID', '$currentAttemptValue', '$answerDescription', '$timeToComplete', 'complete')");
+		$mysqli->query("INSERT INTO submittedAnswers (questionID, uID, attemptNumber, description, timeToComplete, status) VALUES ('$questionID', '$uID', '$currentAttemptValue', '$answerDescription', '$timeToComplete', 'complete')");
 	} else {
-		mysql_query("INSERT INTO submittedAnswers (questionID, uID, attemptNumber, description, timeToComplete, status) VALUES ('$questionID', '$uID', '$currentAttemptValue', '$answerDescription', '$timeToComplete', 'incomplete')");
+		$mysqli->query("INSERT INTO submittedAnswers (questionID, uID, attemptNumber, description, timeToComplete, status) VALUES ('$questionID', '$uID', '$currentAttemptValue', '$answerDescription', '$timeToComplete', 'incomplete')");
 	}
 	$_SESSION['answerEvaluated'] = true;
 	$questionDisplayURL = "questionDisplay.php?q=" . $_SESSION['question'];
@@ -118,16 +119,16 @@ if (isset($_POST['submit'])) {
 } else if ($_POST['giveUp'] == true) {
 	$uID = $_SESSION['uID'];
 	$questionID = $_SESSION['question'];
-	$maxAttemptResult = mysql_query("SELECT MAX(attemptNumber) FROM submittedMRVs WHERE questionID = $questionID AND uID = $uID;");
-	if (mysql_num_rows($maxAttemptResult) == 0) {
+	$maxAttemptResult = $mysqli->query("SELECT MAX(attemptNumber) FROM submittedMRVs WHERE questionID = $questionID AND uID = $uID;");
+	if ($maxAttemptResult->num_rows == 0) {
 		$currentAttemptValue = 1;
 	} else {
-		$maxAttemptArray = mysql_fetch_array($maxAttemptResult);
+		$maxAttemptArray = $maxAttemptResult->fetch_assoc();
 		$maxAttemptValue = $maxAttemptArray['MAX(attemptNumber)'];
 		$currentAttemptValue = $maxAttemptValue + 1;
 	}
 	//Insert the submittedAnswer into the database with status "given up"
-	mysql_query("INSERT INTO submittedAnswers (questionID, uID, attemptNumber, description, timeToComplete, status) VALUES ('$questionID', '$uID', '$currentAttemptValue', '', '0', 'given up')");
+	$mysqli->query("INSERT INTO submittedAnswers (questionID, uID, attemptNumber, description, timeToComplete, status) VALUES ('$questionID', '$uID', '$currentAttemptValue', '', '0', 'given up')");
 	$questionDisplayURL = "questionDisplay.php?q=" . $_SESSION['question'];
 	header("location: $questionDisplayURL");
 } else {

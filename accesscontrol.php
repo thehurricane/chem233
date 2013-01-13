@@ -13,8 +13,28 @@ if (isset($_SESSION['uID'])) {
 	if (is_numeric ($_POST['uID'])) {
 		//User has submitted a valid (numeric) id to be checked
 		$uID = $_POST['uID'];
-		$uID = mysql_real_escape_string($uID);
-		$usersResult = mysql_query("SELECT * FROM users WHERE uID = $uID");
+		
+		/*
+		$query = "SELECT Name, CountryCode FROM City ORDER BY Name LIMIT 20";
+		if ($stmt = mysqli_prepare($link, $query)) {
+			
+			//execute query
+			mysqli_stmt_execute($stmt);
+			
+			//store result
+			mysqli_stmt_store_result($stmt);
+			
+			printf("Number of rows: %d.\n", mysqli_stmt_num_rows($stmt));
+			
+			//free result
+			mysqli_stmt_free_result($stmt);
+			
+			//close statement
+			mysqli_stmt_close($stmt);
+		}
+		*/
+		$uID = $mysqli->real_escape_string($uID);
+		$usersResult = $mysqli->query("SELECT * FROM users WHERE uID = $uID");
 		if (!$usersResult) {
 			//Database problem
 			$pageTitle = "Access Denied";
@@ -22,7 +42,7 @@ if (isset($_SESSION['uID'])) {
 			echo "<p>A database error occurred while checking your login details. If this error persists, please contact your administrator. To try logging in again, click <a href='./index.php'>here</a></p>";
 			include 'footer.php';
 			exit;
-		} else if (mysql_num_rows($usersResult) == 0) {
+		} else if ($usersResult->num_rows == 0) {
 			//User doesn't exist in the database
 			$pageTitle = "Access Denied";
 			include 'header.php';
@@ -31,7 +51,7 @@ if (isset($_SESSION['uID'])) {
 			exit;
 		} else {
 			//Set this session variable so it can be accessed throughout the app
-			$usersResultArray = mysql_fetch_array($usersResult);
+			$usersResultArray = $usersResult->fetch_assoc();
 			$_SESSION['uID'] = $usersResultArray['uID'];
 		}
 	} else {

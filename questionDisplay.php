@@ -14,10 +14,10 @@ $questionID = $_GET['q'];
 
 //Check to see if the student has already completed the assignment or given up
 $completedOrGivenUp = false;
-$submittedAnswersResult = mysql_query("SELECT * FROM submittedAnswers WHERE uID = $uID AND questionID = $questionID");
-$submittedAnswersResultSize = mysql_num_rows($submittedAnswersResult);
+$submittedAnswersResult = $mysqli->query("SELECT * FROM submittedAnswers WHERE uID = $uID AND questionID = $questionID");
+$submittedAnswersResultSize = $submittedAnswersResult->num_rows;
 for ($i = 0; $i < $submittedAnswersResultSize; $i++) {
-	$currentRow = mysql_fetch_array($submittedAnswersResult);
+	$currentRow = $submittedAnswersResult->fetch_assoc();
 	if ((strcmp($currentRow['status'], "complete") == 0) || (strcmp($currentRow['status'], "given up") == 0)) {
 		$completedOrGivenUp = true;
 	}
@@ -31,11 +31,11 @@ if (!$completedOrGivenUp) {
 $startTime = time();
 
 //Print out the question description
-$questionsResult = mysql_query("SELECT * FROM questions WHERE questionID = $questionID");
-$questionArray = mysql_fetch_array($questionsResult);
+$questionsResult = $mysqli->query("SELECT * FROM questions WHERE questionID = $questionID");
+$questionArray = $questionsResult->fetch_assoc();
 //Strip the slashes that were inserted into the description
 echo "<h5>Question Description:</h5>\n";
-echo "<p>" . stripcslashes($questionArray['description']) . "</p>\n";
+echo "<p>" . $questionArray['description'] . "</p>\n";
 
 if ($_SESSION['answerEvaluated'] == true) {
 	echo "<p><b>Please view your feedback for each intermediate below.</b></p>\n";
@@ -45,8 +45,8 @@ if ($_SESSION['answerEvaluated'] == true) {
 
 echo "<table>\n";
 //Get all the questionMRV files to provide data for the MarvinSketch windows
-$questionMRVsResult = mysql_query("SELECT * FROM questionMRVs WHERE questionID = $questionID");
-$questionMRVsResultSize = mysql_num_rows($questionMRVsResult);
+$questionMRVsResult = $mysqli->query("SELECT * FROM questionMRVs WHERE questionID = $questionID");
+$questionMRVsResultSize = $questionMRVsResult->num_rows;
 //Print out a row of intermediates that just contain the original structure (for reference)
 echo "<tr>\n";
 for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
@@ -57,7 +57,7 @@ for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
 echo "</tr>\n";
 echo "<tr>\n";
 for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
-	$currentRow = mysql_fetch_array($questionMRVsResult);
+	$currentRow = $questionMRVsResult->fetch_assoc();
 	if ($i != 1 ) {
 		//Make an arrow between MarvinSketch windows
 		echo "<td><img src = './images/equalArrowWhite.png' alt = '-->'/></td>\n";
@@ -87,11 +87,11 @@ echo "</tr>\n";
 //Check if the question has been submitted for evaluation. If it hasn't then print out the questionMRVs as a starting point. If it has, then print out the most recently submittedMRVs.
 //HOWEVER, if $completedOrGivenUp is true then just print out the correct MRVs in marvin sketch windows
 if ($completedOrGivenUp) {
-	$correctMRVsResult = mysql_query("SELECT * FROM correctMRVs WHERE questionID = $questionID");
-	$correctMRVsResultSize = mysql_num_rows($correctMRVsResult);
+	$correctMRVsResult = $mysqli->query("SELECT * FROM correctMRVs WHERE questionID = $questionID");
+	$correctMRVsResultSize = $correctMRVsResult->num_rows;
 	echo "<tr>\n";
 	for ($i = 1; $i <= $correctMRVsResultSize; $i++) {
-		$currentRow = mysql_fetch_array($correctMRVsResult);
+		$currentRow = $correctMRVsResult->fetch_assoc();
 		if ($i != 1 ) {
 			//Make an arrow between MarvinSketch windows
 			echo "<td><img src = './images/equalArrowWhite.png' alt = '-->'/></td>\n";
@@ -119,10 +119,10 @@ if ($completedOrGivenUp) {
 	echo "</tr>\n";
 } else if ($_SESSION['answerEvaluated'] != true) {
 	//A question hasn't been submitted. Display the starting point.
-	$questionMRVsResult = mysql_query("SELECT * FROM questionMRVs WHERE questionID = $questionID");
+	$questionMRVsResult = $mysqli->query("SELECT * FROM questionMRVs WHERE questionID = $questionID");
 	echo "<tr>\n";
 	for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
-		$currentRow = mysql_fetch_array($questionMRVsResult);
+		$currentRow = $questionMRVsResult->fetch_assoc();
 		if ($i != 1 ) {
 			//Make an arrow between MarvinSketch windows
 			echo "<td><img src = './images/equalArrowWhite.png' alt = '<-->'/></td>\n";
@@ -154,15 +154,15 @@ if ($completedOrGivenUp) {
 	echo "</tr>\n";
 } else {
 	//A question has been submitted. Display the submitted response, and feedback for those responses.
-	$maxAttemptResult = mysql_query("SELECT MAX(attemptNumber) FROM submittedMRVs WHERE questionID = $questionID AND uID = $uID;");
-	$maxAttemptArray = mysql_fetch_array($maxAttemptResult);
+	$maxAttemptResult = $mysqli->query("SELECT MAX(attemptNumber) FROM submittedMRVs WHERE questionID = $questionID AND uID = $uID;");
+	$maxAttemptArray = $maxAttemptResult->fetch_assoc();
 	$maxAttemptValue = $maxAttemptArray['MAX(attemptNumber)'];
 	
-	$submittedMRVsResult = mysql_query("SELECT * FROM submittedMRVs WHERE questionID = $questionID AND questionIndex = $i AND uID = $uID AND attemptNumber = $maxAttemptValue");
+	$submittedMRVsResult = $mysqli->query("SELECT * FROM submittedMRVs WHERE questionID = $questionID AND questionIndex = $i AND uID = $uID AND attemptNumber = $maxAttemptValue");
 	echo "<tr>\n";
 	for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
-		$submittedMRVsResult = mysql_query("SELECT * FROM submittedMRVs WHERE questionID = $questionID AND questionIndex = $i AND uID = $uID AND attemptNumber = $maxAttemptValue");
-		$currentRow = mysql_fetch_array($submittedMRVsResult);
+		$submittedMRVsResult = $mysqli->query("SELECT * FROM submittedMRVs WHERE questionID = $questionID AND questionIndex = $i AND uID = $uID AND attemptNumber = $maxAttemptValue");
+		$currentRow = $submittedMRVsResult->fetch_assoc();
 		if ($i != 1 ) {
 			//Make an arrow between MarvinSketch windows
 			echo "<td><img src = './images/equalArrowWhite.png' alt = '-->'/></td>\n";

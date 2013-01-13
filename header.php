@@ -20,7 +20,7 @@ $pageTitle;
 <div id = "header">
 
 <p>
-<img src="./images/caffeineMolecule.png" alt="A Caffeine Molecule, courtesty of Michael Stroeck from Wikipedia"/>
+<img src="./images/caffeineMolecule.png" alt="A Caffeine Molecule, courtesy of Michael Stroeck from Wikipedia"/>
 </p>
 
 <h1>
