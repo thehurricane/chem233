@@ -2,7 +2,9 @@
 include 'db.php';
 $pageTitle = "Administrator Login";
 include 'header.php';
-
+if (session_start()) {
+	//echo "Session Active.";
+}
 //Use this line once the program is on the UBC server
 //if (isset($_SESSION['aID']) || isUserValid()) {
 if (isset($_SESSION['aID'])) {
@@ -26,7 +28,7 @@ if (isset($_SESSION['aID'])) {
 				echo "<p>A database error occurred while checking your login details. If this error persists, please contact your administrator. To try logging in again, click <a href='./index.php'>here</a></p>";
 				include 'footer.php';
 				exit;
-			} else if ($usersResult->num_rows == 0) {
+			} else if ($adminsResult->num_rows == 0) {
 				//Admin doesn't exist in the database
 				$pageTitle = "Access Denied";
 				include 'header.php';
@@ -37,6 +39,8 @@ if (isset($_SESSION['aID'])) {
 				//Set this session variable so it can be accessed throughout the app
 				$adminsResultArray = $adminsResult->fetch_assoc();
 				$_SESSION['aID'] = $adminsResultArray['aID'];
+				$firstName = $adminsResultArray['firstName'];
+				echo "<p>Welcome, " . $firstName . ". You are now logged in as an administrator.</p>";
 			}
 		} else {
 			//Admin has submitted an invalid id

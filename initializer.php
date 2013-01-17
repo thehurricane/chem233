@@ -103,12 +103,12 @@ if($result) {
 	echo "<p>ERROR: Couldn't insert first user.</p>\n";
 }
 
-$myPassword = hash('sha256', 'chem233');
-$result = $mysqli->query("INSERT INTO admins (aID, firstName, lastName, controlGroup) VALUES (11110000, 'Admin', 'Istrator', '$myPassword')");
+$myPassword = hash('sha256', 'jackierocks');
+$result = $mysqli->query("INSERT INTO admins (aID, firstName, lastName, passwordHash) VALUES (11110000, 'Admin', 'Istrator', '$myPassword')");
 if($result) {
 	echo "<p>OK: inserted Admin Istrator.</p>\n";
 } else {
-	echo "<p>ERROR: Couldn't insert first user.</p>\n";
+	echo "<p>ERROR: Couldn't insert first admin.</p>\n";
 }
 
 $usersResult = $mysqli->query("SELECT * FROM users");

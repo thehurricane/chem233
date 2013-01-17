@@ -6,7 +6,7 @@ if (session_start()) {
 }
 //Use this line once the program is on the UBC server
 //if (isset($_SESSION['uID']) || isUserValid()) {
-if (isset($_SESSION['uID'])) {
+if ((isset($_SESSION['uID'])) || (isset($_SESSION['aID']))) {
 	//User is already logged in. Do nothing.
 } else if (isset($_POST['uID'])) {
 	//User has submitted a userID
