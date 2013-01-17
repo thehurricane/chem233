@@ -103,6 +103,14 @@ if($result) {
 	echo "<p>ERROR: Couldn't insert first user.</p>\n";
 }
 
+$myPassword = hash('sha256', 'chem233');
+$result = $mysqli->query("INSERT INTO admins (aID, firstName, lastName, controlGroup) VALUES (11110000, 'Admin', 'Istrator', '$myPassword')");
+if($result) {
+	echo "<p>OK: inserted Admin Istrator.</p>\n";
+} else {
+	echo "<p>ERROR: Couldn't insert first user.</p>\n";
+}
+
 $usersResult = $mysqli->query("SELECT * FROM users");
 $usersResultSize = $usersResult->num_rows;
 echo $usersResultSize;
@@ -111,6 +119,18 @@ for ($i = 0; $i < $usersResultSize; $i++) {
 	$firstName = $currentUser['firstName'];
 	echo "<p>$firstName</p>\n";
 }
+
+$adminsResult = $mysqli->query("SELECT * FROM admins");
+$adminsResultSize = $adminsResult->num_rows;
+echo $adminsResultSize;
+for ($i = 0; $i < $adminsResultSize; $i++) {
+	$currentAdmin = $adminsResult->fetch_assoc();
+	$firstName = $currentAdmin['firstName'];
+	$password = $currentAdmin['passwordHash'];
+	echo "<p>$firstName</p>\n";
+	echo "<p>$password</p>\n";
+}
+
 /*
 echo "<p><b>TABLES:</b></p>\n";
 $tablesResult = $mysqli->query("SHOW TABLES");
