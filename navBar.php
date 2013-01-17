@@ -5,7 +5,6 @@
 <li><a href="otherResources.php">resources</a></li>
 <li><a href = "help.php">help</a></li>
 <li><a href = "logout.php">log out</a></li>
-<!--Take this items out later-->
 <?php
 if (isset($_SESSION['aID'])) {
 ?>

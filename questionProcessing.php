@@ -25,7 +25,7 @@ if (isset($_POST['submit'])) {
 	for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
 		if (isset($_POST["mol" . $i])) {
 			//Save the file to disk first
-			$myFile = "./submittedMRVs/q" . $questionID . "."  . $i . "user" . $uID . ".mrv";
+			$myFile = "./submittedMRVs/q" . $questionID . "."  . $i . ".user" . $uID . ".attempt" . $currentAttemptValue . ".mrv";
 			$myFilePointer = fopen($myFile, 'w') or die('cannot open file');
 			fwrite($myFilePointer, $_POST["mol" . $i]);
 			fclose($myFilePointer);

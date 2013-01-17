@@ -11,5 +11,5 @@ courtesy of Ryan Fait (http://ryanfait.com/sticky-footer/)-->
 </html>
 <?php
 //Close the mysql connection
-mysql_close($con);
+$mysqli->close();
 ?>
