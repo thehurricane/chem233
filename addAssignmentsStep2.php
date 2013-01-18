@@ -1,5 +1,5 @@
 <?php
-include 'accesscontrol.php';
+include 'adminAccessControl.php';
 $pageTitle = "Add assignments: Step 2";
 include 'header.php';
 
@@ -22,8 +22,8 @@ if (is_numeric($numberOfQuestions)) {
 //If the input checks out okay, populate the form. Otherwise print an error.
 if ($numberOfQuestions != null) {
 	//Get the next available question index to the be the primary key for the question to add
-	$assignmentsQueryResult = mysql_query("SHOW TABLE STATUS WHERE name='assignments'");
-	$firstRow = mysql_fetch_array($assignmentsQueryResult);
+	$assignmentsQueryResult = $mysqli->query("SHOW TABLE STATUS WHERE name='assignments'");
+	$firstRow = $assignmentsQueryResult->fetch_assoc();
 	$nextAssignmentID = $firstRow["Auto_increment"];
 	//Require the calendar class on this page.
 	require_once('./calendar/classes/tc_calendar.php');
@@ -70,8 +70,8 @@ if ($numberOfQuestions != null) {
 	<table>
 	<?php
 	for ($i = 1; $i <= $numberOfQuestions; $i++) {
-		$questionsQueryResult = mysql_query("SELECT * FROM questions");
-		$questionsQueryResultSize = mysql_num_rows($questionsQueryResult);
+		$questionsQueryResult = $mysqli->query("SELECT * FROM questions");
+		$questionsQueryResultSize = $questionsQueryResult->num_rows;
 	?>
 	<tr>
 	<th>Question <?php echo $i; ?>:</th>
@@ -79,7 +79,7 @@ if ($numberOfQuestions != null) {
 		<select name ='questionSelect<?php echo $i; ?>'>
 		<?php
 		for ($j = 1; $j <= $questionsQueryResultSize; $j++) {
-			$nextQuestionRow = mysql_fetch_array($questionsQueryResult);
+			$nextQuestionRow = $questionsQueryResult->fetch_assoc();
 			$nextQuestionID = $nextQuestionRow['questionID'];
 			$nextQuestionDescription = stripslashes($nextQuestionRow['description']);
 			if (strlen($nextQuestionDescription) > 40) {

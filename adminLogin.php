@@ -9,6 +9,9 @@ if (session_start()) {
 //if (isset($_SESSION['aID']) || isUserValid()) {
 if (isset($_SESSION['aID'])) {
 	//Admin is already logged in. Do nothing.
+	echo "<p>You are logged in as an administrator.</p>";
+	echo "<p><a href = 'addAssignmentsStep1.php'>Assignments Administration</a></p>";
+	echo "<p><a href = 'addQuestionsStep1.php'>Questions Administration</a></p>";
 } else if (isset($_POST['aID'])) {
 	//Admin has submitted an id
 	if (isset($_POST['password'])) {

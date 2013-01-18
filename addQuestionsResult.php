@@ -1,5 +1,5 @@
 <?php
-include 'accesscontrol.php';
+include 'adminAccessControl.php';
 $pageTitle = "Add questions";
 include 'header.php';
 //TODO: Make this page only accessible by administrators
@@ -13,7 +13,7 @@ $questionID = $_POST["questionID"];
 //Escape the description
 echo "<p>Question description: " . $_POST["comments"] . "</p>\n";
 $questionDescription = addslashes($_POST["comments"]);
-$result = mysql_query("INSERT INTO questions (description) VALUES ('$questionDescription');");
+$result = $mysqli->query("INSERT INTO questions (description) VALUES ('$questionDescription');");
 if(!$result) {
 	echo "<p>ERROR: Could not make new question.</p>\n";
 } else {
@@ -27,7 +27,7 @@ for ($i = 1; $i <= $_SESSION['numberOfQuestionMRVs']; $i++) {
 		echo "<p>ERROR: " . $_FILES[$fileName]['error'] . "</p>\n";
 	} else if (strcmp($_FILES[$fileName]['tmp_name'], "") != 0){
 		move_uploaded_file($_FILES[$fileName]['tmp_name'], $questionMRVFilePath);
-		$result = mysql_query("INSERT INTO questionMRVs (questionID, questionIndex, filepath) VALUES ('$questionID', '$i', '$questionMRVFilePath')");
+		$result = $mysqli->query("INSERT INTO questionMRVs (questionID, questionIndex, filepath) VALUES ('$questionID', '$i', '$questionMRVFilePath')");
 		if(!$result) {
 			echo "<p>ERROR: " . $fileName . ": Could not insert this file.</p>\n";
 		} else {
@@ -45,7 +45,7 @@ for ($i = 1; $i <= $_SESSION['numberOfQuestionMRVs']; $i++) {
 		} else if (strcmp($_FILES[$fileName]['tmp_name'], "") != 0) {
 			$correctMRVFilePath = "./correctMRVs/q" . $questionID . ".correct." . $i . "." . $j . ".mrv";
 			move_uploaded_file($_FILES[$fileName]['tmp_name'], $correctMRVFilePath);
-			$result = mysql_query("INSERT INTO correctMRVs (questionID, questionIndex, filepath) VALUES ('$questionID', '$i', '$correctMRVFilePath');");
+			$result = $mysqli->query("INSERT INTO correctMRVs (questionID, questionIndex, filepath) VALUES ('$questionID', '$i', '$correctMRVFilePath');");
 			if(!$result) {
 				echo "<p>ERROR: " . $fileName . ": Could not insert this file.</p>\n";
 			} else {
@@ -67,7 +67,7 @@ for ($i = 1; $i <= $_SESSION['numberOfQuestionMRVs']; $i++) {
 			$feedbackDescriptionID = "feedbackDescription" . $i . "_" . $j;
 			echo "<p>This is the feedback description: " .  $_POST[$feedbackDescriptionID] . "</p>\n";
 			$feedbackDescription = addslashes($_POST[$feedbackDescriptionID]);
-			$result = mysql_query("INSERT INTO feedbackMRVs (questionID, questionIndex, filepath, feedback) VALUES ('$questionID', '$i', '$feedbackMRVFilePath', '$feedbackDescription');");
+			$result = $mysqli->query("INSERT INTO feedbackMRVs (questionID, questionIndex, filepath, feedback) VALUES ('$questionID', '$i', '$feedbackMRVFilePath', '$feedbackDescription');");
 			if(!$result) {
 				echo "<p>ERROR: " . $fileName . ": Could not insert this file.</p>\n";
 			} else {
@@ -79,16 +79,16 @@ for ($i = 1; $i <= $_SESSION['numberOfQuestionMRVs']; $i++) {
 	}
 }
 //Print out the total number of questionMRVs that were inserted.
-$result = mysql_query("SELECT * FROM questionMRVs WHERE questionID = '$questionID';");
-$resultSize = mysql_num_rows($result);
+$result = $mysqli->query("SELECT * FROM questionMRVs WHERE questionID = '$questionID';");
+$resultSize = $result->num_rows;
 echo "<p>" . $resultSize . " question MRVs inserted for " . $questionID . ".</p>\n";
 //Print out the total number of correctMRVs that were inserted.
-$result = mysql_query("SELECT * FROM correctMRVs WHERE questionID = '$questionID';");
-$resultSize = mysql_num_rows($result);
+$result = $mysqli->query("SELECT * FROM correctMRVs WHERE questionID = '$questionID';");
+$resultSize = $result->num_rows;
 echo "<p>" . $resultSize . " correct MRVs inserted for " . $questionID . ".</p>\n";
 //Print out the total number of feedbackMRVs that were inserted.
-$result = mysql_query("SELECT * FROM feedbackMRVs WHERE questionID = '$questionID';");
-$resultSize = mysql_num_rows($result);
+$result = $mysqli->query("SELECT * FROM feedbackMRVs WHERE questionID = '$questionID';");
+$resultSize = $result->num_rows;
 echo "<p>" . $resultSize . " feedback MRVs inserted for " . $questionID . ".</p>\n";
 //Clear the files array
 $_FILES = array();

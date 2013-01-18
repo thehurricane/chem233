@@ -1,5 +1,5 @@
 <?php
-include 'accesscontrol.php';
+include 'adminAccessControl.php';
 $pageTitle = "Add questions: Step 2";
 include 'header.php';
 //TODO: Make this page only accessible by administrators
@@ -47,8 +47,8 @@ if (is_numeric($maxNumberOfFeedbackMRVs)) {
 //If the input checks out okay, populate the form. Otherwise print an error.
 if (($numberOfQuestionMRVs != null) && ($maxNumberOfCorrectMRVs != null) && ($maxNumberOfFeedbackMRVs != null)) {
 	//Get the next available question index to the be the primary key for the question to add
-	$questionsQuery = mysql_query("SHOW TABLE STATUS WHERE name='questions'");
-	$firstRow = mysql_fetch_array($questionsQuery);
+	$questionsQuery = $mysqli->query("SHOW TABLE STATUS WHERE name='questions'");
+	$firstRow = $questionsQuery->fetch_assoc();
 	$nextQuestionValue = $firstRow["Auto_increment"];
 	?>
 	<!--Add questions and their answers to the system-->
