@@ -1,5 +1,4 @@
 <?php
-/*
 //LOCALLY ON MAMP:
 //Database host name
 $dbHostname = "localhost";
@@ -9,7 +8,7 @@ $dbUsername = "root";
 $dbPassword = "root";
 //Database name
 $dbName = "chem233applet";
-*/
+/*
 //REMOTELY ON COSMOS:
 //Database host name
 $dbHostname = "localhost";
@@ -19,6 +18,7 @@ $dbUsername = "chem233min";
 $dbPassword = "password";
 //Database name
 $dbName = "chem233Applet";
+*/
 //Connect to the database
 //$dbConnection = mysqli_connect($dbHostname, $dbUsername, $dbPassword, $dbName);
 $mysqli = new mysqli($dbHostname, $dbUsername, $dbPassword, $dbName);
