@@ -17,6 +17,7 @@ $maxNumberOfFeedbackMRVs = $_POST['maxNumberOfFeedbackMRVs'];
 $_SESSION['numberOfQuestionMRVs'] = $numberOfQuestionMRVs;
 $_SESSION['maxNumberOfCorrectMRVs'] = $maxNumberOfCorrectMRVs;
 $_SESSION['maxNumberOfFeedbackMRVs'] = $maxNumberOfFeedbackMRVs;
+$_SESSION['questionIndex'] = 1;
 if (is_numeric($numberOfQuestionMRVs)) {
 	$numberOfQuestionMRVs = floor($numberOfQuestionMRVs);
 	//Limit number of question MRVs to 40

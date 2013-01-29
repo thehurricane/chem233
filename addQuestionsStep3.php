@@ -1,6 +1,6 @@
 <?php
 include 'adminAccessControl.php';
-$pageTitle = "Add questions: Step 2";
+$pageTitle = "Add questions: Step " . $_SESSION['questionIndex'];
 //$internalStyle = "table, th, tr, td {border: 2px solid white;}";
 include 'header.php';
 
@@ -11,17 +11,24 @@ if (isset($_POST["questionID"])) {
 	$_SESSION['questionID'] = $questionID;
 	//Escape the description
 	$questionDescription = addslashes($_POST["questionDescription"]);
-	$result = $mysqli->query("INSERT INTO questions (description) VALUES ('$questionDescription');");
+	$result = $mysqli->query("INSERT INTO questions (questionID, description) VALUES ('$questionID', '$questionDescription');");
 	if(!$result) {
-		echo "<p class='error'>ERROR: Could not make new question. Contact your administrator.</p>\n";
-		include 'footer.php';
-		exit;
+		$questionsResult = $mysqli->query("SELECT description FROM questions WHERE questionID = '$questionID';");
+		$questionsResultSize = $questionsResult->num_rows;
+		if ($questionsResultSize == 1) {
+			echo "<p class='error'>Question has already been created (ID = " . $questionID . ")</p>\n";
+			$firstRow = $questionsResult->fetch_assoc();
+			$questionDescription = $firstRow["description"];
+			echo "<p>Question description: " . $questionDescription . "</p>\n";
+		} else {
+			echo "<p class='error'>ERROR: Contact your administrator</p>\n";
+		}
 	} else {
 		echo  "<p class='success'>SUCCESS: Question created (ID = " . $questionID . ")</p>\n";
 		echo "<p>Question description: " . $_POST["questionDescription"] . "</p>\n";
 	}
 	$_SESSION['questionIndex'] = 1;
-} else {
+} else if (isset($_SESSION['questionIndex'])){
 	//The admin came here from Step 3
 	//Debug statements
 	//echo "<p>POST:</p>\n";
@@ -43,7 +50,8 @@ if (isset($_POST["questionID"])) {
 	
 	//If the file doesn't exist, then there is a problem. TODO: Handle this error better
 	if ($_FILES[$fileName]['error'] > 0) {
-		echo "<p class='error'>ERROR: " . $_FILES[$fileName]['error'] . "</p>\n";
+		//The file wasn't found
+		//echo "<p class='error'>ERROR: " . $_FILES[$fileName]['error'] . "</p>\n";
 	} else if (strcmp($_FILES[$fileName]['tmp_name'], "") != 0){
 		//Save the file onto disk
 		move_uploaded_file($_FILES[$fileName]['tmp_name'], $questionMRVFilePath);
@@ -151,7 +159,7 @@ if (isset($_POST["questionID"])) {
 	}
 }
 
-if ($_SESSION['questionIndex'] <= $_SESSION['numberOfQuestionMRVs']) {
+if ((isset($_SESSION['questionIndex'])) && ($_SESSION['questionIndex'] <= $_SESSION['numberOfQuestionMRVs'])) {
 	$i = $_SESSION['questionIndex'];
 	//Get the next available question index to the be the primary key for the question to add
 	$questionsQuery = $mysqli->query("SHOW TABLE STATUS WHERE name='questions'");
@@ -233,7 +241,8 @@ if ($_SESSION['questionIndex'] <= $_SESSION['numberOfQuestionMRVs']) {
 	</p>
 	</form>
 	<?php
-} else {
+} else if (isset($_SESSION['questionIndex'])) {
+	echo "<h4>Question Add Results:</h4>\n";
 	//At this point, check to make sure the all the files for the questions were added properly.
 	//Print out the total number of questionMRVs that were inserted.
 	$result = $mysqli->query("SELECT * FROM questionMRVs WHERE questionID = '$questionID';");
@@ -251,6 +260,8 @@ if ($_SESSION['questionIndex'] <= $_SESSION['numberOfQuestionMRVs']) {
 	unset($_SESSION['maxNumberOfCorrectMRVs']);
 	unset($_SESSION['maxNumberOfFeedbackMRVs']);
 	unset($_SESSION['questionIndex']);
+} else {
+	echo "<p class='error'>Question has already been uploaded.</p>\n";
 }
 include 'footer.php';
 ?>
