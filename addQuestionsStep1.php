@@ -1,6 +1,6 @@
 <?php
 include 'adminAccessControl.php';
-$pageTitle = "Add questions: Step 1";
+$pageTitle = "Add questions";
 include 'header.php';
 //TODO: Make this page only accessible by administrators
 

@@ -23,27 +23,27 @@ if (isset($_SESSION['aID'])) {
 				//Database problem
 				$pageTitle = "Access Denied";
 				include 'header.php';
-				echo "<p>A database error occurred while checking your login details. If this error persists, please contact your administrator. To try logging in again, click <a href='./addAssignmentsStep1.php'>here</a></p>";
+				echo "<p>A database error occurred while checking your login details. If this error persists, please contact your administrator. To try logging in again, click <a href='./adminLogin.php'>here</a></p>";
 				include 'footer.php';
 				exit;
 			} else if ($adminsResult->num_rows == 0) {
 				//Admin doesn't exist in the database
 				$pageTitle = "Access Denied";
 				include 'header.php';
-				echo "<p>Your user ID is incorrect, or you are not a registered admin on this site. To try logging in again, click <a href='./addAssignmentsStep1.php'>here</a></p>";
+				echo "<p>Your user ID is incorrect, or you are not a registered admin on this site. To try logging in again, click <a href='./adminLogin.php'>here</a></p>";
 				include 'footer.php';
 				exit;
 			} else {
 				//Set this session variable so it can be accessed throughout the app
 				$adminsResultArray = $adminsResult->fetch_assoc();
 				$_SESSION['aID'] = $adminsResultArray['aID'];
-				header("location:addAssignmentsStep1.php");
+				header("location:adminLogin.php");
 			}
 		} else {
 			//Admin has submitted an invalid id
 			$pageTitle = "Access Denied";
 			include 'header.php';
-			echo "<p>Please enter a valid number for your username. To try logging in again, click <a href='./addAssignmentsStep1.php'>here</a></p>";
+			echo "<p>Please enter a valid number for your username. To try logging in again, click <a href='./adminLogin.php'>here</a></p>";
 			include 'footer.php';
 			exit;
 		}
@@ -51,7 +51,7 @@ if (isset($_SESSION['aID'])) {
 		//Admin has submitted an invalid id
 		$pageTitle = "Access Denied";
 		include 'header.php';
-		echo "<p>Please enter a password. To try logging in again, click <a href='./addAssignmentsStep1.php'>here</a></p>";
+		echo "<p>Please enter a password. To try logging in again, click <a href='./adminLogin.php'>here</a></p>";
 		include 'footer.php';
 		exit;
 	}
