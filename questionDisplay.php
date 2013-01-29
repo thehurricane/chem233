@@ -149,7 +149,6 @@ if ($completedOrGivenUp) {
 		</script>
 		";
 		echo "</td>";
-		$count++;
 	}
 	echo "</tr>\n";
 } else {
@@ -189,7 +188,6 @@ if ($completedOrGivenUp) {
 		</script>
 		";
 		echo "</td>";
-		$count++;
 	}
 	echo "</tr>\n";
 	//Print out the results of processing this question (if it has been submitted)
