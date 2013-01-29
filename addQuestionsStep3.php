@@ -242,24 +242,30 @@ if ((isset($_SESSION['questionIndex'])) && ($_SESSION['questionIndex'] <= $_SESS
 	</form>
 	<?php
 } else if (isset($_SESSION['questionIndex'])) {
+	$totalNumberOfFilesUploaded = 0;
 	echo "<h4>Question Add Results:</h4>\n";
 	//At this point, check to make sure the all the files for the questions were added properly.
 	//Print out the total number of questionMRVs that were inserted.
 	$result = $mysqli->query("SELECT * FROM questionMRVs WHERE questionID = '$questionID';");
 	$resultSize = $result->num_rows;
+	$totalNumberOfFilesUploaded = $totalNumberOfFilesUploaded + $resultSize;
 	echo "<p>" . $resultSize . " question MRVs inserted for " . $questionID . ".</p>\n";
 	//Print out the total number of correctMRVs that were inserted.
 	$result = $mysqli->query("SELECT * FROM correctMRVs WHERE questionID = '$questionID';");
 	$resultSize = $result->num_rows;
+	$totalNumberOfFilesUploaded = $totalNumberOfFilesUploaded + $resultSize;
 	echo "<p>" . $resultSize . " correct MRVs inserted for " . $questionID . ".</p>\n";
 	//Print out the total number of feedbackMRVs that were inserted.
 	$result = $mysqli->query("SELECT * FROM feedbackMRVs WHERE questionID = '$questionID';");
 	$resultSize = $result->num_rows;
+	$totalNumberOfFilesUploaded = $totalNumberOfFilesUploaded + $resultSize;
 	echo "<p>" . $resultSize . " feedback MRVs inserted for " . $questionID . ".</p>\n";
 	unset($_SESSION['numberOfQuestionMRVs']);
 	unset($_SESSION['maxNumberOfCorrectMRVs']);
 	unset($_SESSION['maxNumberOfFeedbackMRVs']);
 	unset($_SESSION['questionIndex']);
+	echo "<p class='success'>Total number of files uploaded: " . $totalNumberOfFilesUploaded . "</p>\n";
+	echo "<p><a href='addQuestionsStep1.php'>Add another file</a></p>\n";
 } else {
 	echo "<p class='error'>Question has already been uploaded.</p>\n";
 }
