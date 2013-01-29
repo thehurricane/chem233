@@ -37,7 +37,7 @@ $questionArray = $questionsResult->fetch_assoc();
 echo "<h5>Question Description:</h5>\n";
 echo "<p>" . $questionArray['description'] . "</p>\n";
 
-if ($_SESSION['answerEvaluated'] == true) {
+if ((isset($_SESSION['answerEvaluated'])) && ($_SESSION['answerEvaluated'] == true)) {
 	echo "<p><b>Please view your feedback for each intermediate below.</b></p>\n";
 } else if ($completedOrGivenUp) {
 	echo "<p><b>Please view the correct mechanism below.</b></p>\n";
@@ -117,7 +117,7 @@ if ($completedOrGivenUp) {
 		echo "</td>";
 	}
 	echo "</tr>\n";
-} else if ($_SESSION['answerEvaluated'] != true) {
+} else if ((!isset($_SESSION['answerEvaluated'])) || ($_SESSION['answerEvaluated'] != true)) {
 	//A question hasn't been submitted. Display the starting point.
 	$questionMRVsResult = $mysqli->query("SELECT * FROM questionMRVs WHERE questionID = $questionID");
 	echo "<tr>\n";
