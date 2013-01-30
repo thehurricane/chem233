@@ -44,7 +44,7 @@ if ($numberOfQuestions != null) {
 	$myCalendar = new tc_calendar("startDate");
 	$myCalendar->setIcon("./calendar/images/iconCalendar.gif", true, false);
 	$myCalendar->setDate($currentDay, $currentMonth, $currentYear);
-	$myCalendar->setPath("../calendar/");
+	$myCalendar->setPath("./calendar/");
 	$myCalendar->setDatePair('startDate', 'dueDate', "$currentYear-$currentMonth-$currentDay");
 	//Output the calendar to the page
 	$myCalendar->writeScript();
@@ -57,7 +57,7 @@ if ($numberOfQuestions != null) {
 	$myCalendar = new tc_calendar("dueDate");
 	$myCalendar->setIcon("./calendar/images/iconCalendar.gif", true, false);
 	$myCalendar->setDate($currentDay, $currentMonth, $currentYear);
-	$myCalendar->setPath("../calendar/");
+	$myCalendar->setPath("./calendar/");
 	$myCalendar->setDatePair('startDate', 'dueDate', "$currentYear-$currentMonth-$currentDay");
 	//Output the calendar to the page
 	$myCalendar->writeScript();
