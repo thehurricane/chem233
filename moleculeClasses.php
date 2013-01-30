@@ -235,12 +235,13 @@ class Molecule {
 		foreach ($other->bondArray as $otherCurrentBond) {
 			//echo "<p>$thisCurrentBond->atomRef1</p>\n";
 			//echo "<p>$thisCurrentBond->atomRef2</p>\n";
-			if ($otherBondKeyValueArray[$otherCurrentBond->atomRef1] == null) {
+			print_r($otherBondKeyValueArray);
+			if (!isset($otherBondKeyValueArray[$otherCurrentBond->atomRef1])) {
 				$otherBondKeyValueArray[$otherCurrentBond->atomRef1] = 1;
 			} else {
 				$otherBondKeyValueArray[$otherCurrentBond->atomRef1]++;
 			}
-			if ($otherBondKeyValueArray[$otherCurrentBond->atomRef2] == null) {
+			if (!isset($otherBondKeyValueArray[$otherCurrentBond->atomRef2])) {
 				$otherBondKeyValueArray[$otherCurrentBond->atomRef2] = 1;
 			} else {
 				$otherBondKeyValueArray[$otherCurrentBond->atomRef2]++;
@@ -253,13 +254,13 @@ class Molecule {
 			//echo "<p><b>$currentAtomID</b></p>\n";
 			foreach ($currentAtom as $matchingAtomID) {
 				//echo "<p>$matchingAtomID</p>\n";
-				if ($thisBondKeyValueArray[$currentAtomID] == $otherBondKeyValueArray[$matchingAtomID]) {
-					//These atoms match
-					//echo "<p>$currentAtomID matches $matchingAtomID</p>\n";
-				} else {
+				if ((isset($thisBondKeyValueArray[$currentAtomID])) && (isset($otherBondKeyValueArray[$matchingAtomID])) && ($thisBondKeyValueArray[$currentAtomID] != $thisBondKeyValueArray[$currentAtomID])) {
 					//These atoms do NOT match. Remove from the array
 					//echo "<p>$currentAtomID DOESN'T match $matchingAtomID</p>\n";
 					unset($atomKeyValueArray[$currentAtomID][$matchingAtomID]);
+				} else {
+					//These atoms match
+					//echo "<p>$currentAtomID matches $matchingAtomID</p>\n";
 				}
 			}
 			if ($atomKeyValueArray[$currentAtomID] == null) {
