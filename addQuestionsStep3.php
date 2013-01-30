@@ -1,16 +1,16 @@
 <?php
 include 'adminAccessControl.php';
-$pageTitle = "Add questions: Step " . $_SESSION['questionIndex'];
+$pageTitle = "Add questions";
 //$internalStyle = "table, th, tr, td {border: 2px solid white;}";
 include 'header.php';
 
 //Check if the administrator came to this page from step 2
-if (isset($_POST["questionID"])) {
+if (isset($_POST['questionID'])) {
 	//The admin came here from Step 2
-	$questionID = $_POST["questionID"];
+	$questionID = $_POST['questionID'];
 	$_SESSION['questionID'] = $questionID;
 	//Escape the description
-	$questionDescription = addslashes($_POST["questionDescription"]);
+	$questionDescription = addslashes($_POST['questionDescription']);
 	$result = $mysqli->query("INSERT INTO questions (questionID, description) VALUES ('$questionID', '$questionDescription');");
 	if(!$result) {
 		$questionsResult = $mysqli->query("SELECT description FROM questions WHERE questionID = '$questionID';");
@@ -18,14 +18,14 @@ if (isset($_POST["questionID"])) {
 		if ($questionsResultSize == 1) {
 			echo "<p class='error'>Question has already been created (ID = " . $questionID . ")</p>\n";
 			$firstRow = $questionsResult->fetch_assoc();
-			$questionDescription = $firstRow["description"];
+			$questionDescription = $firstRow['description'];
 			echo "<p>Question description: " . $questionDescription . "</p>\n";
 		} else {
 			echo "<p class='error'>ERROR: Contact your administrator</p>\n";
 		}
 	} else {
 		echo  "<p class='success'>SUCCESS: Question created (ID = " . $questionID . ")</p>\n";
-		echo "<p>Question description: " . $_POST["questionDescription"] . "</p>\n";
+		echo "<p>Question description: " . $_POST['questionDescription'] . "</p>\n";
 	}
 	$_SESSION['questionIndex'] = 1;
 } else if (isset($_SESSION['questionIndex'])){
@@ -265,7 +265,7 @@ if ((isset($_SESSION['questionIndex'])) && ($_SESSION['questionIndex'] <= $_SESS
 	unset($_SESSION['maxNumberOfFeedbackMRVs']);
 	unset($_SESSION['questionIndex']);
 	echo "<p class='success'>Total number of files uploaded: " . $totalNumberOfFilesUploaded . "</p>\n";
-	echo "<p><a href='addQuestionsStep1.php'>Add another file</a></p>\n";
+	echo "<p><a href='addQuestionsStep1.php'>Add another question</a></p>\n";
 } else {
 	echo "<p class='error'>Question has already been uploaded.</p>\n";
 }

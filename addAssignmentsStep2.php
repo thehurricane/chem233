@@ -3,8 +3,6 @@ include 'adminAccessControl.php';
 $pageTitle = "Add assignments: Step 2";
 include 'header.php';
 
-//TODO: Make this page only accessible by administrators
-
 //Verify input from previous page
 $numberOfQuestions = $_POST['numberOfQuestions'];
 if (is_numeric($numberOfQuestions)) {

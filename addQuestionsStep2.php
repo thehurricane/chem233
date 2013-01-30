@@ -1,6 +1,6 @@
 <?php
 include 'adminAccessControl.php';
-$pageTitle = "Add questions: Step 2";
+$pageTitle = "Add questions";
 include 'header.php';
 
 function unsetSessionVariables() {
