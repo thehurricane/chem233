@@ -33,7 +33,7 @@ if ($numberOfQuestions != null) {
 	?>
 	<!--Add an assignment with questions to the system-->
 	<script language="javascript" src="./calendar/calendar.js"></script>
-	<form action='addAssignmentsResult.php' enctype='multipart/form-data' method='post'>
+	<form action='addAssignmentsStep3.php' enctype='multipart/form-data' method='post'>
 	<p>When will this assignment be open for students to use? (12:00am/00:00)</p>
 	<p>
 	<!-- Calendar functionality provided by: http://www.triconsole.com/php/calendar_datepicker.php -->
