@@ -30,9 +30,9 @@ if (isset($_POST['dueDate'])) {
 }
 $result = $mysqli->query("INSERT INTO assignments (startDateTime, dueDateTime) VALUES ('$startDate', '$dueDate');");
 if(!$result) {
-	echo "<p>Error: could not make a new assignment.</p>\n";
+	echo "<p class='error'>Error: could not make a new assignment.</p>\n";
 } else {
-	echo "<p>Assignment created: " . $assignmentID . "</p>\n";
+	echo "<p class='success'>Assignment created: " . $assignmentID . "</p>\n";
 	echo "<p>Open at: " . $startDate . "</p>\n";
 	echo "<p>Due on: " . $dueDate . "</p>\n";
 }
@@ -42,9 +42,9 @@ for ($i = 1; $i <= $_SESSION['numberOfQuestions']; $i++) {
 	//echo "<p>HELLO: " . $currentQuestionID . "</p>\n";
 	$result = $mysqli->query("INSERT INTO assignmentQuestions (assignmentID, questionID, assignmentIndex, controlGroup) VALUES ('$assignmentID', '$currentQuestionID', '$i', 'a');");
 	if(!$result) {
-		echo "<p>question number " . $i . ": Could not add this question to the assignment.</p>\n";
+		echo "<p class='error'>question number " . $i . ": Could not add this question to the assignment.</p>\n";
 	} else {
-		echo "<p>question number " . $i . ": Added question to the assignment.</p>\n";
+		echo "<p class='success'>question number " . $i . ": Added question to the assignment.</p>\n";
 	}
 }
 include 'footer.php';
