@@ -61,7 +61,7 @@ if (isset($_POST['submit'])) {
 		$correctMRVsResult = $mysqli->query("SELECT * FROM correctMRVs WHERE questionID = $questionID AND questionIndex = $i");
 		$nextRow = $correctMRVsResult->fetch_assoc();
 		//Get the file that is saved on the server by looking at the filepath
-		$file = $nextRow[filepath];
+		$file = $nextRow['filepath'];
 		//Create a new molecule using the Molecule class constructor (see moleculeClasses.php)
 		$correctMoleculeArray[$i-1] = new Molecule($file);
 	}
@@ -82,7 +82,7 @@ if (isset($_POST['submit'])) {
 			$feedbackMRVsResultSize = $feedbackMRVsResult->num_rows;
 			$j = 0;
 			while (($j < $feedbackMRVsResultSize) && ($alternateFeedbackFound == false)) {
-				$nextRow = $feedbackMRVsResult->fetch_assoc;
+				$nextRow = $feedbackMRVsResult->fetch_assoc();
 				//Get the file that is saved on the server by looking at the filepath
 				$file = $nextRow['filepath'];
 				//Create a new molecule using the Molecule class constructor (see moleculeClasses.php)

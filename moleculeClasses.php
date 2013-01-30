@@ -68,12 +68,15 @@ class Molecule {
 		}
 		
 		//Create an array containing each bond and all its information
-		$bondArrayXML = $xmlFile->MDocument->MChemicalStruct->molecule->bondArray->bond;
+		$bondArrayXML = $xmlFile->MDocument->MChemicalStruct->molecule->bondArray;
+		if (empty($bondArrayXML)) {
+			$bondArrayXML = $xmlFile->MDocument->MChemicalStruct->reaction->reactantList->molecule->bondArray;
+		}
 		$numBonds = count($bondArrayXML);
 		//echo "<p>DEBUG: $numBonds bonds in file</p>\n";
 	
 		for($i = 0; $i < $numBonds; $i++) {
-			$bond = $bondArrayXML[$i];
+			$bond = $bondArrayXML->bond[$i];
 			$bondedAtoms = $bond['atomRefs2'];
 			$bondInfo = str_word_count($bondedAtoms,1, '0123456789');
 			$bondInfo[2] = (int)$bond['order'];

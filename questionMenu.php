@@ -37,19 +37,24 @@ if($assignmentID != NULL) {
 			$currentQuestion = $questionsResult->fetch_assoc();
 			$questionDescription = $currentQuestion['description'];
 			$maxAttemptResult = $mysqli->query("SELECT MAX(attemptNumber) FROM submittedAnswers WHERE questionID = $questionID AND uID = $uID;");
-			if ($maxAttemptResult->num_rows == 0) {
-				$attemptValue = 0;
-			} else {
+			$attemptValue = 0;
+			if ($maxAttemptResult) {
 				$maxAttemptArray = $maxAttemptResult->fetch_assoc();
 				$maxAttemptValue = $maxAttemptArray['MAX(attemptNumber)'];
-				$attemptValue = $maxAttemptValue;
+				if ($maxAttemptValue != null) {
+					$attemptValue = $maxAttemptValue;
+				}
 			}
 			echo "<tr>\n";
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $currentAssignmentQuestion['assignmentIndex'] . "</a></td>\n";
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $questionDescription . "</a></td>\n";
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $attemptValue . "</a></td>\n";
 			$submittedAnswersResult = $mysqli->query("SELECT * FROM submittedAnswers WHERE questionID = $questionID AND uID = $uID;");
-			$submittedAnswersResultSize = $submittedAnswersResult->num_rows;
+			if (!$submittedAnswersResult) {
+				$submittedAnswersResultSize = 0;
+			} else {
+				$submittedAnswersResultSize = $submittedAnswersResult->num_rows;
+			}
 			$statusFound = false;
 			$status = "No";
 			$j = 0;
