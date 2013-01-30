@@ -69,7 +69,7 @@ if (($numberOfQuestionMRVs != null) && ($maxNumberOfCorrectMRVs != null) && ($ma
 	<input type="hidden" value="<?php echo $nextQuestionValue; ?>" name="questionID"/>
 	</p>
 	<p>
-	<input type='submit' value='Upload'/>
+	<input type='submit' value='Go'/>
 	</p>
 	</form>
 	<?php
