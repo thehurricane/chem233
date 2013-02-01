@@ -3,7 +3,7 @@
 This page contains useful links for students.
 More links are needed. Asking Jackie or the TAs for useful pages would be a good idea.
 */
-include 'accesscontrol.php';
+include 'accessControl.php';
 $pageTitle = "Other Resources";
 include 'header.php';
 ?>

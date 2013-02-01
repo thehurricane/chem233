@@ -2,7 +2,7 @@
 /*
 This page contains a short description of how to use the system. It could probably be elaborated on.
 */
-include 'accesscontrol.php';
+include 'accessControl.php';
 $pageTitle = "Help";
 include 'header.php';
 ?>

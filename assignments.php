@@ -2,7 +2,7 @@
 /*
 This page displays all the assignments in the system.
 */
-include 'accesscontrol.php';
+include 'accessControl.php';
 $pageTitle = "Assignments";
 include 'header.php';
 ?>

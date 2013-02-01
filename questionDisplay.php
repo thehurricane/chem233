@@ -2,7 +2,7 @@
 /*
 This page displays a given question to the user. The question displayed is specified by the GET variable "q".
 */
-include 'accesscontrol.php';
+include 'accessControl.php';
 $pageTitle = "Assignment: " . $_SESSION['assignmentID'] . ", Question: " . $_GET['q'];
 include 'header.php';
 

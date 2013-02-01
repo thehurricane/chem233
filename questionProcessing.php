@@ -2,7 +2,7 @@
 /*
 This page should never actually be displayed to the user. It just evaluates their answers and then goes back to questionDisplay.
 */
-include 'accesscontrol.php';
+include 'accessControl.php';
 if (isset($_POST['submit'])) {
 	//Set this variable to be false because we are evaluating the question that was submitted.
 	$questionID = $_SESSION['question'];

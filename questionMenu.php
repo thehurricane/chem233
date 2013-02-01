@@ -2,7 +2,7 @@
 /*
 This page displays all the questions contained in a given assignment to the user.
 */
-include 'accesscontrol.php';
+include 'accessControl.php';
 if ($_GET['assignment'] != NULL) {
 	$pageTitle = "Assignment: " . $_GET['assignment'] . " Questions";
 } else {

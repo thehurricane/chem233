@@ -1,5 +1,5 @@
 <?php
-include 'accesscontrol.php';
+include 'accessControl.php';
 $pageTitle = "Home";
 include 'header.php';
 if (isset($_SESSION['uID'])) {
