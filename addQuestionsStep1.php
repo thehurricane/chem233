@@ -1,8 +1,10 @@
 <?php
+/*
+This file contains the first step an administrator must take to create a new question.
+*/
 include 'adminAccessControl.php';
-$pageTitle = "Add questions";
+$pageTitle = "Add Questions";
 include 'header.php';
-//TODO: Make this page only accessible by administrators
 
 ?>
 <form method="post" action="addQuestionsStep2.php">

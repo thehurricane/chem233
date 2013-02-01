@@ -1,7 +1,9 @@
 <?php
+/*
+This file contains the third step an administrator must take to create a new question. Note that this step will repeat x times, where x is equal to the number of questionMRV files the admin has specified.
+*/
 include 'adminAccessControl.php';
-$pageTitle = "Add questions";
-//$internalStyle = "table, th, tr, td {border: 2px solid white;}";
+$pageTitle = "Add Questions";
 include 'header.php';
 
 //Check if the administrator came to this page from step 2
@@ -30,15 +32,11 @@ if (isset($_POST['questionID'])) {
 	$_SESSION['questionIndex'] = 1;
 } else if (isset($_SESSION['questionIndex'])){
 	//The admin came here from Step 3
-	//Debug statements
-	//echo "<p>POST:</p>\n";
-	//print_r($_POST);
-	//echo "<p>FILES:</p>\n";
-	//print_r($_FILES);
 	$questionID = $_SESSION['questionID'];
 	$questionIndex = $_SESSION['questionIndex'];
 	
 	//Add the question MRV file to the system
+	
 	//The location where the file will be saved on the server
 	$questionMRVFilePath = "./questionMRVs/q" . $questionID . "." . $questionIndex . ".mrv";
 	
@@ -242,6 +240,7 @@ if ((isset($_SESSION['questionIndex'])) && ($_SESSION['questionIndex'] <= $_SESS
 	</form>
 	<?php
 } else if (isset($_SESSION['questionIndex'])) {
+	//Do this code after the last set of files is uploaded.
 	$totalNumberOfFilesUploaded = 0;
 	echo "<h4>Question Add Results:</h4>\n";
 	//At this point, check to make sure the all the files for the questions were added properly.
@@ -267,6 +266,7 @@ if ((isset($_SESSION['questionIndex'])) && ($_SESSION['questionIndex'] <= $_SESS
 	echo "<p class='success'>Total number of files uploaded: " . $totalNumberOfFilesUploaded . "</p>\n";
 	echo "<p><a href='addQuestionsStep1.php'>Add another question</a></p>\n";
 } else {
+	//This message will be displayed if the user reloads the page after they have added a question.
 	echo "<p class='error'>Question has already been uploaded.</p>\n";
 }
 include 'footer.php';

@@ -1,4 +1,7 @@
 <?php
+/*
+This file is included in every admin page to prevent unauthorized use of the app.
+*/
 include 'db.php';
 if (session_start()) {
 	//echo "Session Active.";

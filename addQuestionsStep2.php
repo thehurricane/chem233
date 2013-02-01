@@ -1,8 +1,12 @@
 <?php
+/*
+This file contains the second step an administrator must take to create a new question.
+*/
 include 'adminAccessControl.php';
-$pageTitle = "Add questions";
+$pageTitle = "Add Questions";
 include 'header.php';
 
+//Helper function to clear session variables that are set on this page
 function unsetSessionVariables() {
 	unset($_SESSION['numberOfQuestionMRVs']);
 	unset($_SESSION['maxNumberOfCorrectMRVs']);
@@ -20,8 +24,8 @@ $_SESSION['maxNumberOfFeedbackMRVs'] = $maxNumberOfFeedbackMRVs;
 $_SESSION['questionIndex'] = 1;
 if (is_numeric($numberOfQuestionMRVs)) {
 	$numberOfQuestionMRVs = floor($numberOfQuestionMRVs);
-	//Limit number of question MRVs to 40
-	if (($numberOfQuestionMRVs > 0) && ($numberOfQuestionMRVs < 20)) {
+	//Limit number of question MRVs to 20
+	if (($numberOfQuestionMRVs > 0) && ($numberOfQuestionMRVs <= 20)) {
 		echo "<h4>Adding question with $numberOfQuestionMRVs question MRV(s).</h4>\n";
 	} else {
 		$numberOfQuestionMRVs = null;
@@ -31,8 +35,8 @@ if (is_numeric($numberOfQuestionMRVs)) {
 }
 if (is_numeric($maxNumberOfCorrectMRVs)) {
 	$maxNumberOfCorrectMRVs = floor($maxNumberOfCorrectMRVs);
-	//Limit number of correct MRVs to 20
-	if (($maxNumberOfCorrectMRVs > 0) && ($maxNumberOfCorrectMRVs < 20)) {
+	//Limit the maximum number of correct MRVs to 19
+	if (($maxNumberOfCorrectMRVs > 0) && ($maxNumberOfCorrectMRVs <= 19)) {
 		echo "<h4>Max number of correct MRVs is $maxNumberOfCorrectMRVs.</h4>\n";
 	} else {
 		$maxNumberOfCorrectMRVs = null;
@@ -42,8 +46,8 @@ if (is_numeric($maxNumberOfCorrectMRVs)) {
 }
 if (is_numeric($maxNumberOfFeedbackMRVs)) {
 	$maxNumberOfFeedbackMRVs = floor($maxNumberOfFeedbackMRVs);
-	//Limit number of feedback MRVs to 20
-	if (($maxNumberOfFeedbackMRVs > 0) && ($maxNumberOfFeedbackMRVs < 20)) {
+	//Limit the maximum number of feedback MRVs to 18
+	if (($maxNumberOfFeedbackMRVs > 0) && ($maxNumberOfFeedbackMRVs <= 18)) {
 		echo "<h4>Max number of feedback MRVs is $maxNumberOfFeedbackMRVs.</h4>\n";
 	} else {
 		$maxNumberOfFeedbackMRVs = null;

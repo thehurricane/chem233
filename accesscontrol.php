@@ -1,4 +1,7 @@
 <?php
+/*
+This file is included in every non-admin page to prevent unauthorized use of the app.
+*/
 include 'db.php';
 require("connectBB.php");
 if (session_start()) {
@@ -6,33 +9,13 @@ if (session_start()) {
 }
 //Use this line once the program is on the UBC server
 //if (isset($_SESSION['uID']) || isUserValid()) {
-if ((isset($_SESSION['uID'])) || (isset($_SESSION['aID']))) {
+if (isset($_SESSION['uID'])) {
 	//User is already logged in. Do nothing.
 } else if (isset($_POST['uID'])) {
 	//User has submitted a userID
 	if (is_numeric ($_POST['uID'])) {
 		//User has submitted a valid (numeric) id to be checked
 		$uID = $_POST['uID'];
-		
-		/*
-		$query = "SELECT Name, CountryCode FROM City ORDER BY Name LIMIT 20";
-		if ($stmt = mysqli_prepare($link, $query)) {
-			
-			//execute query
-			mysqli_stmt_execute($stmt);
-			
-			//store result
-			mysqli_stmt_store_result($stmt);
-			
-			printf("Number of rows: %d.\n", mysqli_stmt_num_rows($stmt));
-			
-			//free result
-			mysqli_stmt_free_result($stmt);
-			
-			//close statement
-			mysqli_stmt_close($stmt);
-		}
-		*/
 		$uID = $mysqli->real_escape_string($uID);
 		$usersResult = $mysqli->query("SELECT * FROM users WHERE uID = $uID");
 		if (!$usersResult) {

@@ -1,9 +1,15 @@
 <?php
-
+/*
+This file contains the class definitions of the objects used in this system.
+This is definitely the ugliest part of the system. The Molecule contructor method and equals function are not very fun to look at, but they are also at the core of the app.
+*/
 //Class that holds Molecule data
 class Molecule {
+	//Contains an array representation of all the Atoms in the Molecule
 	public $atomArray;
+	//Contains an array representation of all the Bonds in the Molecule
 	public $bondArray;
+	//Contains an array representation of all the ElectronFlows in the Molecule
 	public $electronFlowArray;
 	
 	/*
@@ -316,47 +322,6 @@ class Molecule {
 			}
 		}
 		//print_r($electronFlowKeyValueArray);
-		/*
-		//TODO: Fix this up (make sure you're indexing the correct part of the array)
-		for ($i = 0; $i < count($electronFlowKeyValueArray); $i++) {
-			$matchStart1 = FALSE;
-			$matchStart2 = FALSE;
-			$matchEnd1 = FALSE;
-			$matchEnd2 = FALSE;
-			for ($j = 0; $j < count($electronFlowKeyValueArray[$i]); $j++) {
-				if (($this->electronFlowArray[$i]->startAtom2 == NULL) && ($other->electronFlowArray[$j]->startAtom2 == NULL)) {
-					//Starts at an atom
-					//echo "<p>Starts at an atom</p>\n";
-					foreach($atomKeyValueArray[$this->electronFlowArray[$i]->startAtom1] as $currentAtom) {
-						if (strcmp($currentAtom, $other->electronFlowArray[$j]->startAtom1) == 0) {
-							$matchStart1 = TRUE;
-							$matchStart2 = TRUE;
-						}
-					}
-				} else if ($thisCurrentElectronFlow->startAtom2 == NULL) {
-					//otherCurrentElectronFlow originates at a bond, thisCurrentElectronFlow does not
-				} else if ($otherCurrentElectronFlow->startAtom2 == NULL) {
-					//thisCurrentElectronFlow originates at a bond, otherCurrentElectronFlow does not	
-				} else {
-					//Starts at a bond
-					//echo "<p>Starts at a bond</p>\n";
-					foreach($atomKeyValueArray[$this->electronFlowArray[$i]->startAtom1] as $currentAtom) {
-						//echo "Atom 1 ";
-						if (strcmp($currentAtom, $other->electronFlowArray[$j]->startAtom1) == 0) {
-							$matchStart1 = true;
-						}
-					}
-					foreach($atomKeyValueArray[$this->electronFlowArray[$i]->startAtom2] as $currentAtom) {
-						//echo "Atom 2 ";
-						if (strcmp($currentAtom, $other->electronFlowArray[$j]->startAtom2) == 0) {
-							$matchStart2 = true;
-						}
-					}
-				}
-			}
-		}
-		*/
-		//TODO: Make a more robust check against other electronFlows
 		foreach($this->electronFlowArray as $thisCurrentElectronFlow) {
 			$matchStart1 = false;
 			$matchStart2 = false;

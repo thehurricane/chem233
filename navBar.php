@@ -7,8 +7,9 @@
 <?php
 if (isset($_SESSION['aID'])) {
 ?>
-<li><a href = "addAssignmentsStep1.php">assignments admin</a></li>
+<li><a href = "adminAssignments.php">assignments admin</a></li>
 <li><a href = "addQuestionsStep1.php">questions admin</a></li>
+<li><a href = "emptyMarvinSketch.php">marvin sketch</a></li>
 <?php
 }
 ?>

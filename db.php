@@ -1,5 +1,5 @@
 <?php
-//LOCALLY ON MAMP:
+//LOCALLY ON MAMP/WAMP/LAMP:
 //Database host name
 $dbHostname = "localhost";
 //Database user name
@@ -20,7 +20,7 @@ $dbPassword = "password";
 $dbName = "chem233Applet";
 */
 //Connect to the database
-//$dbConnection = mysqli_connect($dbHostname, $dbUsername, $dbPassword, $dbName);
+//Use the object "$mysqli" from now on when accessing the database
 $mysqli = new mysqli($dbHostname, $dbUsername, $dbPassword, $dbName);
 if ($mysqli->connect_errno) {
     echo "Connect failed: " . $mysqli->connect_error;
