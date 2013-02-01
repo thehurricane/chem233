@@ -3,8 +3,6 @@ include 'adminAccessControl.php';
 $pageTitle = "Add assignments: Step 2";
 include 'header.php';
 
-//TODO: Make this page only accessible by administrators
-
 //Verify input from previous page
 $numberOfQuestions = $_POST['numberOfQuestions'];
 if (is_numeric($numberOfQuestions)) {
@@ -35,7 +33,7 @@ if ($numberOfQuestions != null) {
 	?>
 	<!--Add an assignment with questions to the system-->
 	<script language="javascript" src="./calendar/calendar.js"></script>
-	<form action='addAssignmentsResult.php' enctype='multipart/form-data' method='post'>
+	<form action='addAssignmentsStep3.php' enctype='multipart/form-data' method='post'>
 	<p>When will this assignment be open for students to use? (12:00am/00:00)</p>
 	<p>
 	<!-- Calendar functionality provided by: http://www.triconsole.com/php/calendar_datepicker.php -->
@@ -44,7 +42,7 @@ if ($numberOfQuestions != null) {
 	$myCalendar = new tc_calendar("startDate");
 	$myCalendar->setIcon("./calendar/images/iconCalendar.gif", true, false);
 	$myCalendar->setDate($currentDay, $currentMonth, $currentYear);
-	$myCalendar->setPath("../calendar/");
+	$myCalendar->setPath("./calendar/");
 	$myCalendar->setDatePair('startDate', 'dueDate', "$currentYear-$currentMonth-$currentDay");
 	//Output the calendar to the page
 	$myCalendar->writeScript();
@@ -57,7 +55,7 @@ if ($numberOfQuestions != null) {
 	$myCalendar = new tc_calendar("dueDate");
 	$myCalendar->setIcon("./calendar/images/iconCalendar.gif", true, false);
 	$myCalendar->setDate($currentDay, $currentMonth, $currentYear);
-	$myCalendar->setPath("../calendar/");
+	$myCalendar->setPath("./calendar/");
 	$myCalendar->setDatePair('startDate', 'dueDate', "$currentYear-$currentMonth-$currentDay");
 	//Output the calendar to the page
 	$myCalendar->writeScript();

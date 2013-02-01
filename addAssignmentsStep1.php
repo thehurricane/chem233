@@ -2,7 +2,6 @@
 include 'adminAccessControl.php';
 $pageTitle = "Add assignments: Step 1";
 include 'header.php';
-//TODO: Make this page only accessible by administrators
 
 ?>
 <form method="post" action="addAssignmentsStep2.php">
