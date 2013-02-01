@@ -1,11 +1,10 @@
 <?php
-include 'accesscontrol.php';
+include 'adminAccessControl.php';
 $pageTitle = "Questions Administration";
 include 'header.php';
-//TODO: Make this page only accessible by administrators
 
-$questionsQueryResult = mysql_query("SELECT * FROM questions");
-$questionsQueryResultSize = mysql_num_rows($questionsQueryResult);
+$questionsQueryResult = $mysqli->query("SELECT * FROM questions");
+$questionsQueryResultSize = $questionsQueryResult->num_rows;
 ?>
 <p>Use this page to create, delete, or modify questions.</p>
 <p><b><a href = "addQuestionsStep1.php">ADD A NEW QUESTION</a></b></p>
@@ -18,12 +17,12 @@ $questionsQueryResultSize = mysql_num_rows($questionsQueryResult);
 </tr>
 <?php
 for ($i = 1; $i <= $questionsQueryResultSize; $i++) {
-	$nextQuestionRow = mysql_fetch_array($questionsQueryResult);
+	$nextQuestionRow = $questionsQueryResult->fetch_assoc();
 	$questionID = $nextQuestionRow['questionID'];;
-	$assignmentQuestionsQueryResult = mysql_query("SELECT * FROM assignmentQuestions WHERE questionID = '$questionID'");
-	$assignmentQuestionsQueryResultSize = mysql_num_rows($assignmentQuestionsQueryResult);
-	$questionMRVsQueryResult = mysql_query("SELECT * FROM questionMRVs WHERE questionID = '$questionID'");
-	$questionMRVsQueryResultSize = mysql_num_rows($questionMRVsQueryResult);
+	$assignmentQuestionsQueryResult = $mysqli->query("SELECT * FROM assignmentQuestions WHERE questionID = '$questionID'");
+	$assignmentQuestionsQueryResultSize = $assignmentQuestionsQueryResult->num_rows;
+	$questionMRVsQueryResult = $mysqli->query("SELECT * FROM questionMRVs WHERE questionID = '$questionID'");
+	$questionMRVsQueryResultSize = $questionMRVsQueryResult->num_rows;
 ?>
 <tr>
 <td><?php echo $questionID; ?></td>
@@ -35,7 +34,7 @@ for ($i = 1; $i <= $questionsQueryResultSize; $i++) {
 		echo "None";
 	}
 	for ($j = 1; $j <= $assignmentQuestionsQueryResultSize; $j++) {
-		$nextAssignmentQuestionRow = mysql_fetch_array($assignmentQuestionsQueryResult);
+		$nextAssignmentQuestionRow = $assignmentQuestionsQueryResult->fetch_assoc();
 		if ($j == 1) {
 			echo $nextAssignmentQuestionRow['assignmentID'];
 		} else {

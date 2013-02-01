@@ -1,4 +1,7 @@
 <?php
+/*
+This page displays a given question to the user. The question displayed is specified by the GET variable "q".
+*/
 include 'accesscontrol.php';
 $pageTitle = "Assignment: " . $_SESSION['assignmentID'] . ", Question: " . $_GET['q'];
 include 'header.php';
@@ -27,7 +30,7 @@ if (!$completedOrGivenUp) {
 	echo "<p>Press the 'Submit' button (bottom of the page) when you are ready to have your answer evaluated. If you can't figure out what to do, you can press the 'Give Up' button below to view the correct mechanism. Note that once you give up, you can no longer make submissions.</p>\n";
 }
 
-//TODO: Set the start time and pass this time to the questionProcessing page
+//Set the start time and pass this time to the questionProcessing page
 $startTime = time();
 
 //Print out the question description

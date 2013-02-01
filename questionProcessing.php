@@ -1,4 +1,7 @@
 <?php
+/*
+This page should never actually be displayed to the user. It just evaluates their answers and then goes back to questionDisplay.
+*/
 include 'accesscontrol.php';
 if (isset($_POST['submit'])) {
 	//Set this variable to be false because we are evaluating the question that was submitted.
@@ -54,10 +57,10 @@ if (isset($_POST['submit'])) {
 		$submittedMoleculeArray[$i-1] = new Molecule($file);
 	}
 	
+	//TODO: Add functionality for the case where there are multiple correct answers
 	//Populate the correct answer array
 	for ($i = 1; $i <= $questionMRVsResultSize; $i++) {
 		//Get the next correct answer
-		//TODO: Add functionality for the case where there are multiple correct answers
 		$correctMRVsResult = $mysqli->query("SELECT * FROM correctMRVs WHERE questionID = $questionID AND questionIndex = $i");
 		$nextRow = $correctMRVsResult->fetch_assoc();
 		//Get the file that is saved on the server by looking at the filepath
@@ -132,7 +135,6 @@ if (isset($_POST['submit'])) {
 	$questionDisplayURL = "questionDisplay.php?q=" . $_SESSION['question'];
 	header("location: $questionDisplayURL");
 } else {
-	include 'accesscontrol.php';
 	$questionID = $_SESSION['question'];
 	$pageTitle = "Processing Question " . $questionID;
 	include 'header.php';

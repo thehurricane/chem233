@@ -1,4 +1,7 @@
 <?php
+/*
+This page displays all the questions contained in a given assignment to the user.
+*/
 include 'accesscontrol.php';
 if ($_GET['assignment'] != NULL) {
 	$pageTitle = "Assignment: " . $_GET['assignment'] . " Questions";
@@ -13,7 +16,6 @@ $assignmentID = $_GET['assignment'];
 if($assignmentID != NULL) {
 	//Set this session variable for use in questionDisplay.php (it will be used in the title of the page)
 	$_SESSION['assignmentID'] = $assignmentID;
-	//TODO: Change this once the database has been restructured
 	$assignmentQuestionsResult = $mysqli->query("SELECT * FROM assignmentQuestions WHERE assignmentID = '$assignmentID'");
 	$assignmentQuestionsResultSize = $assignmentQuestionsResult->num_rows;
 	if ($assignmentQuestionsResultSize == 0) {
@@ -47,6 +49,7 @@ if($assignmentID != NULL) {
 			}
 			echo "<tr>\n";
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $currentAssignmentQuestion['assignmentIndex'] . "</a></td>\n";
+			//TODO: Limit the length of the description displayed on this page to some reasonable number of characters
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $questionDescription . "</a></td>\n";
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $attemptValue . "</a></td>\n";
 			$submittedAnswersResult = $mysqli->query("SELECT * FROM submittedAnswers WHERE questionID = $questionID AND uID = $uID;");
@@ -70,7 +73,6 @@ if($assignmentID != NULL) {
 				$j++;
 			}
 			echo "<td><a href = 'questionDisplay.php?q=" . $questionID . "'>" . $status . "</a></td>\n";
-			//TODO: Add a data entry that contains the question's description (or at least a shortened version of it)
 			echo "</tr>\n";
 		}
 		echo "</table>\n";
