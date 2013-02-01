@@ -241,7 +241,6 @@ class Molecule {
 		foreach ($other->bondArray as $otherCurrentBond) {
 			//echo "<p>$thisCurrentBond->atomRef1</p>\n";
 			//echo "<p>$thisCurrentBond->atomRef2</p>\n";
-			print_r($otherBondKeyValueArray);
 			if (!isset($otherBondKeyValueArray[$otherCurrentBond->atomRef1])) {
 				$otherBondKeyValueArray[$otherCurrentBond->atomRef1] = 1;
 			} else {
