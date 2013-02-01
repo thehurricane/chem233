@@ -1,5 +1,10 @@
 <?php
-include 'db.php';
+/*
+This is a dangerous file. It is only accessible by administrators, and it is not directly linked to anywhere on the site.
+The purpose of this page is to delete and rebuild all the tables in the database.
+This page should be used for testing purposes and for initializing the database only. Once the database is initialized, this file should be removed from the live server.
+*/
+include 'adminAccessControl.php';
 $pageTitle = "Initialize database";
 include 'header.php';
 

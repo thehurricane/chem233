@@ -12,13 +12,6 @@ $pageTitle;
 </title>
 <link rel="stylesheet" type="text/css" href="./css/styles.css" />
 
-<?php
-if (isset($internalStyle)) {
-	echo "<style>";
-	echo $internalStyle;
-	echo "</style>";
-}
-?>
 </head>
 <body>
 
