@@ -1,6 +1,9 @@
 <?php
+/*
+This file contains the first step an administrator must take to create a new assignment.
+*/
 include 'adminAccessControl.php';
-$pageTitle = "Add assignments: Step 1";
+$pageTitle = "Add Assignments: Step 1";
 include 'header.php';
 
 ?>

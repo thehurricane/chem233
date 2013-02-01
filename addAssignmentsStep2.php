@@ -1,6 +1,9 @@
 <?php
+/*
+This file contains the second step an administrator must take to create a new assignment.
+*/
 include 'adminAccessControl.php';
-$pageTitle = "Add assignments: Step 2";
+$pageTitle = "Add Assignments: Step 2";
 include 'header.php';
 
 //Verify input from previous page
@@ -29,16 +32,14 @@ if ($numberOfQuestions != null) {
 	$currentDay = date("j");
 	$currentMonth = date("n");
 	$currentYear = date("Y");
-	//echo "<p>Current date: $currentDay, $currentMonth, $currentYear</p>\n";
 	?>
-	<!--Add an assignment with questions to the system-->
 	<script language="javascript" src="./calendar/calendar.js"></script>
 	<form action='addAssignmentsStep3.php' enctype='multipart/form-data' method='post'>
 	<p>When will this assignment be open for students to use? (12:00am/00:00)</p>
 	<p>
 	<!-- Calendar functionality provided by: http://www.triconsole.com/php/calendar_datepicker.php -->
 	<?php
-	//Instantiate start calendar and set properties
+	//Instantiate start date calendar and set properties
 	$myCalendar = new tc_calendar("startDate");
 	$myCalendar->setIcon("./calendar/images/iconCalendar.gif", true, false);
 	$myCalendar->setDate($currentDay, $currentMonth, $currentYear);
@@ -51,7 +52,7 @@ if ($numberOfQuestions != null) {
 	<p>When will this assignment be due? (12:00am/00:00)</p>
 	<p>
 	<?php
-	//Instantiate start calendar and set properties
+	//Instantiate due date calendar and set properties
 	$myCalendar = new tc_calendar("dueDate");
 	$myCalendar->setIcon("./calendar/images/iconCalendar.gif", true, false);
 	$myCalendar->setDate($currentDay, $currentMonth, $currentYear);

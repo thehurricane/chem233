@@ -1,4 +1,7 @@
 <?php
+/*
+This is the first page the admin will go to when they log in.
+*/
 include 'adminAccessControl.php';
 $pageTitle = "Administrator Login";
 include 'header.php';
@@ -17,7 +20,7 @@ if (isset($_SESSION['aID'])) {
 	}
 }
 echo "<p>You are logged in as an administrator.</p>";
-echo "<p><a href = 'addAssignmentsStep1.php'>Assignments Administration</a></p>";
+echo "<p><a href = 'adminAssignments.php'>Assignments Administration</a></p>";
 echo "<p><a href = 'addQuestionsStep1.php'>Questions Administration</a></p>";
 
 include 'footer.php';

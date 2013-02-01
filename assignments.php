@@ -1,4 +1,7 @@
 <?php
+/*
+This page displays all the assignments in the system.
+*/
 include 'accesscontrol.php';
 $pageTitle = "Assignments";
 include 'header.php';
@@ -11,7 +14,7 @@ include 'header.php';
 </tr>
 <?php
 $currentTime = time();
-//TODO: Change this to accomodate for the control group type once the database is restructured
+//TODO: Change this code to display only assignments that contain questions for the user's control group
 $assignmentResult = $mysqli->query("SELECT * FROM assignments");
 $assignmentResultSize = $assignmentResult->num_rows;
 for ($i = 0; $i < $assignmentResultSize; $i++) {
