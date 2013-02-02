@@ -3,7 +3,7 @@ include 'accessControl.php';
 $pageTitle = "Home";
 include 'header.php';
 if (isset($_SESSION['uID'])) {
-	$aID = $_SESSION['uID'];
+	$uID = $_SESSION['uID'];
 	$usersResult = $mysqli->query("SELECT firstName, lastName FROM users WHERE uID = '$uID'");
 	if ($usersResult) {
 		$usersResultArray = $usersResult->fetch_assoc();
